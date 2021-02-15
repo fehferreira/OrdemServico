@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +20,12 @@ public class ClienteController {
 
     @RequestMapping("/clientes")
     @ResponseBody
-    public Page<ClienteDto> listarClientes
-            (@PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
+    public Page<ClienteDto> listarClientes(
+            @RequestParam(required = false) String nome,
+            @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
+        if(nome != null){
+            return ClienteDto.converter(clienteRepository.findByNome(nome, paginacao));
+        }
         return ClienteDto.converter(clienteRepository.findAll(paginacao));
     }
 
