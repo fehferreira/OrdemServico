@@ -24,7 +24,7 @@ public class ClienteController {
             @RequestParam(required = false) String nome,
             @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
         if(nome != null){
-            return ClienteDto.converter(clienteRepository.findByNome(nome, paginacao));
+            return ClienteDto.converter(clienteRepository.findAll(Sort.by(nome)));
         }
         return ClienteDto.converter(clienteRepository.findAll(paginacao));
     }

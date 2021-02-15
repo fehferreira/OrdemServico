@@ -2,7 +2,10 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller.dto;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClienteDto {
@@ -43,4 +46,10 @@ public class ClienteDto {
     public static Page<ClienteDto> converter(Page<Cliente> paginaClientes) {
         return paginaClientes.map(ClienteDto::new);
     }
+
+    public static Page<ClienteDto> converter(List<Cliente> listaClientes) {
+
+        return null;
+    }
+
 }
