@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class ClienteDto {
 
+    private Long id;
     private String nome;
     private String endereco;
 
@@ -29,6 +30,14 @@ public class ClienteDto {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public static Page<ClienteDto> converter(Page<Cliente> paginaClientes) {
