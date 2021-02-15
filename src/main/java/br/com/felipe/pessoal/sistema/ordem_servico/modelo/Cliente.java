@@ -3,13 +3,17 @@ package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Cliente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String nome;
     private String cpf;
     private String endereco;
 
+    @OneToMany
     private List<OrdemServico> servicos;
 
     public Long getId() {

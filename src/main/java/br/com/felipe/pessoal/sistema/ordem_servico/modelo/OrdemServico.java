@@ -4,17 +4,20 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
+@Entity
 public class OrdemServico {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dataEntrada = LocalDateTime.now();
     private LocalDateTime dataEntrega;
     private BigDecimal valorServico;
 
-
+    @ManyToOne
     private Cliente cliente;
 
+    @ManyToOne
     private Objeto aparelho;
 
     public Long getId() {

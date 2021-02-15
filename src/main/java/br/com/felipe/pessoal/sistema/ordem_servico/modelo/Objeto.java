@@ -3,13 +3,16 @@ package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 import javax.persistence.*;
 import java.util.List;
 
-
+@Entity
 public class Objeto {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String marca;
     private String modelo;
 
+    @OneToMany
     private List<OrdemServico> servicos;
 
     public Long getId() {
