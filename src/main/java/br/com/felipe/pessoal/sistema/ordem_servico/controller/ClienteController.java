@@ -3,7 +3,6 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ClienteForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
@@ -56,9 +56,14 @@ public class ClienteController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<ClienteDto> atualizarCliente(@RequestBody ClienteForm form ){
-        return null;
+    @PutMapping("/${id}")
+    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id , @RequestBody CadastrarClienteForm form ){
+        Optional<Cliente> clienteBanco = clienteRepository.findById(id);
+        if(clienteBanco.isPresent()){
+            Cliente clienteAtual = form.atualizarCliente(clienteRepository);
+            return ResponseEntity.ok(new ClienteDto(clienteAtual));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
