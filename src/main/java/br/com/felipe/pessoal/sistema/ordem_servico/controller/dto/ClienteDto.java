@@ -12,6 +12,7 @@ public class ClienteDto {
     private String endereco;
 
     public ClienteDto(Cliente cliente) {
+        this.id = cliente.getId();
         this.nome = cliente.getNome();
         this.endereco = cliente.getEndereco();
     }
