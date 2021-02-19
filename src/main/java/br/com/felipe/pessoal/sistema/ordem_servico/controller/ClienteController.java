@@ -26,7 +26,7 @@ public class ClienteController {
 
     @ResponseBody
     @GetMapping
-    public Page<ClienteDto> listarClientes(@RequestParam(required = false) @PathVariable String nome,
+    public Page<ClienteDto> listarClientes(@RequestParam(required = false) String nome,
                                            @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
         if(nome != null){
             return ClienteDto.converter(clienteRepository.findAllByNome(nome, paginacao));
@@ -35,7 +35,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDetalhadoDto> detalharCliente(@PathVariable @RequestParam Long id){
+    public ResponseEntity<ClienteDetalhadoDto> detalharCliente(@PathVariable Long id){
         ClienteDetalhadoDto cliente;
         try{
             cliente = new ClienteDetalhadoDto(clienteRepository.findById(id).get());
