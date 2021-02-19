@@ -26,11 +26,10 @@ public class ClienteController {
 
     @ResponseBody
     @GetMapping
-    public Page<ClienteDto> listarClientes(
-            @RequestParam(required = false) @PathVariable String nome,
-            @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
+    public Page<ClienteDto> listarClientes(@RequestParam(required = false) @PathVariable String nome,
+                                           @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
         if(nome != null){
-            return ClienteDto.converter(clienteRepository.findAll(Sort.by(nome)));
+            return ClienteDto.converter(clienteRepository.findAllByNome(nome, paginacao));
         }
         return ClienteDto.converter(clienteRepository.findAll(paginacao));
     }
