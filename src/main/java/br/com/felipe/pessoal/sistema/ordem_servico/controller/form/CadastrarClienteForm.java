@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.form;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import com.sun.istack.NotNull;
 
 public class CadastrarClienteForm {
@@ -38,5 +39,13 @@ public class CadastrarClienteForm {
 
     public Cliente retornarCliente() {
         return new Cliente(this.nome,this.cpf,this.endereco);
+    }
+
+    public Cliente atualizarCliente(Long id, ClienteRepository clienteRepository) {
+        Cliente clienteAtualizado = clienteRepository.getOne(id);
+        if(!this.nome.isEmpty())clienteAtualizado.setNome(this.nome);
+        if(!this.cpf.isEmpty())clienteAtualizado.setCpf(this.cpf);
+        if(!this.endereco.isEmpty())clienteAtualizado.setEndereco(this.endereco);
+        return clienteAtualizado;
     }
 }

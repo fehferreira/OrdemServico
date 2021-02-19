@@ -60,7 +60,7 @@ public class ClienteController {
     public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id , @RequestBody CadastrarClienteForm form ){
         Optional<Cliente> clienteBanco = clienteRepository.findById(id);
         if(clienteBanco.isPresent()){
-            Cliente clienteAtual = form.atualizarCliente(clienteRepository);
+            Cliente clienteAtual = form.atualizarCliente(id,clienteRepository);
             return ResponseEntity.ok(new ClienteDto(clienteAtual));
         }
         return ResponseEntity.notFound().build();
