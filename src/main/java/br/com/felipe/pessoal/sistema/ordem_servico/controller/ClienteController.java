@@ -25,18 +25,17 @@ public class ClienteController {
     private ClienteRepository clienteRepository;
 
     @ResponseBody
-    @GetMapping("/{nome}")
-    public Page<ClienteDto> listarClientes(
-            @RequestParam(required = false) @PathVariable String nome,
-            @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
+    @GetMapping
+    public Page<ClienteDto> listarClientes(@RequestParam(required = false) String nome,
+                                           @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
         if(nome != null){
-            return ClienteDto.converter(clienteRepository.findAll(Sort.by(nome)));
+            return ClienteDto.converter(clienteRepository.findAllByNome(nome, paginacao));
         }
         return ClienteDto.converter(clienteRepository.findAll(paginacao));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDetalhadoDto> detalharCliente(@PathVariable @RequestParam Long id){
+    public ResponseEntity<ClienteDetalhadoDto> detalharCliente(@PathVariable Long id){
         ClienteDetalhadoDto cliente;
         try{
             cliente = new ClienteDetalhadoDto(clienteRepository.findById(id).get());
@@ -56,7 +55,7 @@ public class ClienteController {
     }
 
 
-    @PutMapping("/${id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id , @RequestBody CadastrarClienteForm form ){
         Optional<Cliente> clienteBanco = clienteRepository.findById(id);
         if(clienteBanco.isPresent()){
@@ -67,11 +66,11 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarCliente(@RequestParam @PathVariable Long id){
+    public ResponseEntity<?> deletarCliente(@PathVariable Long id){
         try{
             clienteRepository.deleteById(id);
             return ResponseEntity.ok().build();
-        }catch(IllegalArgumentException e){
+        }catch(Exception e){
             return ResponseEntity.notFound().build();
         }
     }
