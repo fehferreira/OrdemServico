@@ -66,11 +66,11 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarCliente(@RequestParam @PathVariable Long id){
+    public ResponseEntity<?> deletarCliente(@PathVariable Long id){
         try{
             clienteRepository.deleteById(id);
             return ResponseEntity.ok().build();
-        }catch(IllegalArgumentException e){
+        }catch(Exception e){
             return ResponseEntity.notFound().build();
         }
     }
