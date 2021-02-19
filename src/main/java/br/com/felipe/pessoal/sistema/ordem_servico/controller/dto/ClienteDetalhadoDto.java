@@ -1,19 +1,22 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.dto;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public class ClienteDto {
+public class ClienteDetalhadoDto {
 
     private Long id;
     private String nome;
     private String endereco;
+    private List<OrdemServico> servicos;
 
-    public ClienteDto(Cliente cliente) {
+    public ClienteDetalhadoDto(Cliente cliente) {
         this.nome = cliente.getNome();
         this.endereco = cliente.getEndereco();
+        this.servicos = cliente.getServicos();
     }
 
     public String getNome() {
@@ -40,11 +43,11 @@ public class ClienteDto {
         this.id = id;
     }
 
-    public static Page<ClienteDto> converter(Page<Cliente> paginaClientes) {
-        return paginaClientes.map(ClienteDto::new);
+    public static Page<ClienteDetalhadoDto> converter(Page<Cliente> paginaClientes) {
+        return paginaClientes.map(ClienteDetalhadoDto::new);
     }
 
-    public static Page<ClienteDto> converter(List<Cliente> listaClientes) {
+    public static Page<ClienteDetalhadoDto> converter(List<Cliente> listaClientes) {
 
         return null;
     }
