@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ClienteForm;
@@ -35,10 +36,10 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDto> detalharCliente(@PathVariable @RequestParam Long id){
-        ClienteDto cliente;
+    public ResponseEntity<ClienteDetalhadoDto> detalharCliente(@PathVariable @RequestParam Long id){
+        ClienteDetalhadoDto cliente;
         try{
-            cliente = new ClienteDto(clienteRepository.findById(id).get());
+            cliente = new ClienteDetalhadoDto(clienteRepository.findById(id).get());
         }catch(IllegalArgumentException exception){
             return ResponseEntity.notFound().build();
         }
