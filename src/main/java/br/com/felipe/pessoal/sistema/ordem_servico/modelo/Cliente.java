@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -8,7 +9,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     private String nome;
     private String cpf;
     private String endereco;
@@ -16,12 +17,23 @@ public class Cliente {
     @OneToMany
     private List<OrdemServico> servicos;
 
+    public Cliente(){
+
+    }
+
+    public Cliente(String nome, String cpf, String endereco){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.servicos = new ArrayList<>();
+    }
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getNome() {
@@ -38,5 +50,21 @@ public class Cliente {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public List<OrdemServico> getServicos() {
+        return servicos;
+    }
+
+    public void setServicos(List<OrdemServico> servicos) {
+        this.servicos = servicos;
     }
 }
