@@ -25,7 +25,7 @@ public class ClienteController {
     private ClienteRepository clienteRepository;
 
     @ResponseBody
-    @GetMapping("/{nome}")
+    @GetMapping
     public Page<ClienteDto> listarClientes(
             @RequestParam(required = false) @PathVariable String nome,
             @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
@@ -56,7 +56,7 @@ public class ClienteController {
     }
 
 
-    @PutMapping("/${id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id , @RequestBody CadastrarClienteForm form ){
         Optional<Cliente> clienteBanco = clienteRepository.findById(id);
         if(clienteBanco.isPresent()){
