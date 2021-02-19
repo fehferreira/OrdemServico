@@ -25,7 +25,7 @@ public class Cliente {
         this.nome = nome;
         this.cpf = cpf;
         this.endereco = endereco;
-        this.servicos = = new ArrayList<>();
+        this.servicos = new ArrayList<>();
     }
 
     public Long getId() {
