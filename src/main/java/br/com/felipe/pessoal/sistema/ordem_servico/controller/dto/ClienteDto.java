@@ -44,10 +44,4 @@ public class ClienteDto {
     public static Page<ClienteDto> converter(Page<Cliente> paginaClientes) {
         return paginaClientes.map(ClienteDto::new);
     }
-
-    public static Page<ClienteDto> converter(List<Cliente> listaClientes) {
-
-        return null;
-    }
-
 }
