@@ -51,8 +51,7 @@ class ClienteControllerTest{
     public void deveriaValidarARequisicaoDeListaDeClientes() throws Exception {
         URI uri = new URI(uriClientes);
 
-        mockMvc.perform(MockMvcRequestBuilders
-                .post(uri))
+        mockMvc.perform(MockMvcRequestBuilders.get(uri))
                 .andExpect(MockMvcResultMatchers.status().is(200));
     }
 
