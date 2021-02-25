@@ -57,14 +57,7 @@ class ClienteControllerTest{
     }
 
     @Test
-    public void deveriaValidarOsValoresRecebidosDaListaDeClientes() throws Exception {
-        String name = faker.name().toString();
-        String cpf = String.valueOf(faker.number().numberBetween(111111111,999999999));
-        String address = faker.address().fullAddress().toString();
-
-        Cliente cliente = new Cliente(name,cpf,address);
-        clienteRepository.save(cliente);
-
+    public void deveriaValidarOsParametrosRecebidosViaGet() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(uriClientes))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -72,4 +65,5 @@ class ClienteControllerTest{
                 .andExpect(MockMvcResultMatchers.jsonPath("content[0].nome").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("content[0].endereco").exists());
     }
+
 }
