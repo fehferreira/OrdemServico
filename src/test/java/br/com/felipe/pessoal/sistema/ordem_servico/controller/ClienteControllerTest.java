@@ -5,6 +5,7 @@ import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.aspectj.lang.annotation.Before;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,11 +15,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Locale;
 
 @SpringBootTest
@@ -64,6 +67,14 @@ class ClienteControllerTest{
                 .andExpect(MockMvcResultMatchers.jsonPath("content[0].id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("content[0].nome").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("content[0].endereco").exists());
+    }
+
+    @Test
+    public void deveriaRetornarAQuantidadeDeUsuariosCerta() throws Exception {
+        List<Cliente> listaClientes = clienteRepository.findAll();
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uriClientes))
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfElements", Matchers.is(listaClientes.size())));
     }
 
 }
