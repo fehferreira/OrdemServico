@@ -77,4 +77,16 @@ class ClienteControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("content").isEmpty());
     }
 
+    @Test
+    public void testandoRequisicaoDeDadosClienteDetalhado() throws Exception {
+        Cliente clienteDetalhado = clienteRepository.findById(1L).get();
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uriClientes)
+                .param("id","1L"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("content[0].id", Matchers.is(clienteDetalhado.getId().intValue())))
+                .andExpect(MockMvcResultMatchers.jsonPath("content[0].nome", Matchers.is(clienteDetalhado.getNome())));
+
+    }
+
 }
