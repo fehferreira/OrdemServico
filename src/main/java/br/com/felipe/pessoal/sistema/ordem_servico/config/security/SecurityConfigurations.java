@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AutenticacaoService autenticacaoService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
