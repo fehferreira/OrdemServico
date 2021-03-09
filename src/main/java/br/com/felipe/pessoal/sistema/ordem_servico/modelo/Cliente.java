@@ -14,6 +14,9 @@ public class Cliente {
     private String cpf;
     private String endereco;
 
+    @OneToOne
+    private Usuario usuario;
+
     @OneToMany
     private List<OrdemServico> servicos;
 
