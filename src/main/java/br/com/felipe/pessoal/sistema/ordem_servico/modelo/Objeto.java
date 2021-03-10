@@ -15,6 +15,11 @@ public class Objeto {
     @OneToMany
     private List<OrdemServico> servicos;
 
+    public Objeto(String marca, String modelo) {
+        this.marca = marca;
+        this.modelo = modelo;
+    }
+
     public Long getId() {
         return id;
     }

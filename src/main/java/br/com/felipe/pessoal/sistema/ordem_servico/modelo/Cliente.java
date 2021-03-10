@@ -31,6 +31,13 @@ public class Cliente {
         this.servicos = new ArrayList<>();
     }
 
+    public Cliente(String nome, String cpf, String endereco, Usuario usuario) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.usuario = usuario;
+    }
+
     public Long getId() {
         return id;
     }
