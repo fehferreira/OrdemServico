@@ -14,6 +14,9 @@ public class Cliente {
     private String cpf;
     private String endereco;
 
+    @OneToOne
+    private Usuario usuario;
+
     @OneToMany
     private List<OrdemServico> servicos;
 
@@ -26,6 +29,13 @@ public class Cliente {
         this.cpf = cpf;
         this.endereco = endereco;
         this.servicos = new ArrayList<>();
+    }
+
+    public Cliente(String nome, String cpf, String endereco, Usuario usuario) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.usuario = usuario;
     }
 
     public Long getId() {
