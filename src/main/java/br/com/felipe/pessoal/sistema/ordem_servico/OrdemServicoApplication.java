@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Usuario;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +26,10 @@ public class OrdemServicoApplication {
 		Cliente cliente1 = new Cliente("João Claudio", "123456789-01", "Rua Jean de la huerta 587", usuario1);
 		Cliente cliente2 = new Cliente("Felipe Ferreira", "987645321-01", "Rua Paulo de Morais 217", usuario2);
 		Cliente cliente3 = new Cliente("Maria Clara", "852963741-56", "Avenida Padre Arlindo Vieira 1089", usuario3);
+
+		Objeto objeto1 = new Objeto("Marelli", "IAW 1G7");
+		Objeto objeto2 = new Objeto("Bosch", "ME 7.9.9");
+		Objeto objeto3 = new Objeto("Ford", "EEC-V");
 
 	}
 
