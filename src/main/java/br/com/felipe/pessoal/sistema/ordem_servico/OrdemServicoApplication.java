@@ -3,6 +3,10 @@ package br.com.felipe.pessoal.sistema.ordem_servico;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Usuario;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -10,6 +14,15 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 @EnableSpringDataWebSupport
 public class OrdemServicoApplication {
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private ObjetoRepository objetoRepository;
 
 	public static void main(String[] args) {
 
