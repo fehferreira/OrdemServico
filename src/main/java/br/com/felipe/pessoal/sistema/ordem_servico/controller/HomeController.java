@@ -42,9 +42,9 @@ public class HomeController {
         List<Objeto> objetos = new ArrayList<>();
         List<Cliente> clientes = new ArrayList<>();
 
-        usuarios.add(new Usuario("joao_claudio@email.com","123456"));
-        usuarios.add(new Usuario("felipe_ferreira@email.com","987654"));
-        usuarios.add(new Usuario("maria_clara@email.com","123789"));
+        usuarios.add(new Usuario("joao_claudio@email.com","$2y$12$XeUaWj5g76ra0w.nPbBgG.zEhf1MNKnvP7QU//tZckoRC8TNA7rVK "));
+        usuarios.add(new Usuario("felipe_ferreira@email.com","$2y$12$yqDTn4mUDRoFxLWgDvI7ZOaLyODqSaD7FBPjfROJNoL67NeHT1tFK "));
+        usuarios.add(new Usuario("maria_clara@email.com","$2y$12$iv5GJxM1LqVqzVqRD3dO1e1bnMa8skiMjHPY7IXB1Elqqh3llWdLi "));
 
         clientes.add(new Cliente("João Claudio", "123456789-01", "Rua Jean de la huerta 587", usuarios.get(0)));
         clientes.add(new Cliente("Felipe Ferreira", "987645321-01", "Rua Paulo de Morais 217", usuarios.get(1)));
