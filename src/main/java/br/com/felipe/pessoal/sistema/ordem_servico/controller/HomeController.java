@@ -46,9 +46,9 @@ public class HomeController {
         usuarios.add(new Usuario("felipe_ferreira@email.com","987654"));
         usuarios.add(new Usuario("maria_clara@email.com","123789"));
 
-        clientes.add(new Cliente("João Claudio", "123456789-01", "Rua Jean de la huerta 587", usuarios.get(1)));
-        clientes.add(new Cliente("Felipe Ferreira", "987645321-01", "Rua Paulo de Morais 217", usuarios.get(2)));
-        clientes.add(new Cliente("Maria Clara", "852963741-56", "Avenida Padre Arlindo Vieira 1089", usuarios.get(3)));
+        clientes.add(new Cliente("João Claudio", "123456789-01", "Rua Jean de la huerta 587", usuarios.get(0)));
+        clientes.add(new Cliente("Felipe Ferreira", "987645321-01", "Rua Paulo de Morais 217", usuarios.get(1)));
+        clientes.add(new Cliente("Maria Clara", "852963741-56", "Avenida Padre Arlindo Vieira 1089", usuarios.get(2)));
 
         objetos.add(new Objeto("Marelli", "IAW 1G7"));
         objetos.add(new Objeto("Bosch", "ME 7.9.9"));
