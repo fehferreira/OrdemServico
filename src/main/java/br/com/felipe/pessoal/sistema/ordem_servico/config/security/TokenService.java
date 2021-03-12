@@ -21,11 +21,11 @@ public class TokenService {
     public String gerarToken(Authentication authentication) {
         Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
         Date hoje = new Date();
-        Date expiracao = new Date(hoje.getTime() + expiration);
+        Date expiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
 
         return Jwts.builder()
                 .setIssuer("API do Sistema de Ordem de Serviço")
-                .setSubject(usuarioLogado.getEmail().toString())
+                .setSubject(usuarioLogado.getId().toString())
                 .setIssuedAt(hoje)
                 .setExpiration(expiracao)
                 .signWith(SignatureAlgorithm.HS256, secret)
