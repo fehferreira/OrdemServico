@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.config.security.TokenService;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.TokenDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +27,13 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form){
+    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form){
+        UsernamePasswordAuthenticationToken dadosLogin = form.converter();
+
         try {
-            UsernamePasswordAuthenticationToken dadosLogin = form.converter();
             Authentication authentication = authManager.authenticate(dadosLogin);
-
             String token = tokenService.gerarToken(authentication);
-            System.out.println(token);
-
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }
