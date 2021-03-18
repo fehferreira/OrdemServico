@@ -7,6 +7,7 @@ import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/")
 public class HomeController {
 
     @Autowired
@@ -26,7 +28,7 @@ public class HomeController {
     @Autowired
     private ObjetoRepository objetoRepository;
 
-    @RequestMapping("/")
+    @GetMapping
     @ResponseBody
     public String home(){
         try {
