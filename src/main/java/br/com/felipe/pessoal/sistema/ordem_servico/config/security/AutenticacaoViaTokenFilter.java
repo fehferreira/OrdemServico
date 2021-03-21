@@ -3,6 +3,8 @@ package br.com.felipe.pessoal.sistema.ordem_servico.config.security;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Usuario;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.UsuarioRepository;
 import org.hibernate.annotations.Filter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -34,7 +36,12 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
     private void autenticarCliente(String token) {
         Long idUsuario = tokenService.getIdUsuario(token);
-        Usuario usuarioLogado = usuarioRepository.findById(idUsuario);
+        Usuario usuarioLogado = usuarioRepository.findById(idUsuario).get();
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(usuarioLogado, null, usuarioLogado.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String recuperarToken(HttpServletRequest request) {
