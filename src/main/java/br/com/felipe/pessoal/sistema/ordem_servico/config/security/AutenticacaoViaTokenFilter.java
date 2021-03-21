@@ -1,5 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.config.security;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Usuario;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.UsuarioRepository;
 import org.hibernate.annotations.Filter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -13,8 +15,11 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
     private TokenService tokenService;
 
-    public AutenticacaoViaTokenFilter(TokenService tokenService) {
+    private UsuarioRepository usuarioRepository;
+
+    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -22,9 +27,14 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
         String token = recuperarToken(request);
         System.out.println(token);
         if(tokenService.isTokenValido(token)){
-
+            autenticarCliente(token);
         }
         filterChain.doFilter(request,response);
+    }
+
+    private void autenticarCliente(String token) {
+        Long idUsuario = tokenService.getIdUsuario(token);
+        Usuario usuarioLogado = usuarioRepository.findById(idUsuario);
     }
 
     private String recuperarToken(HttpServletRequest request) {
