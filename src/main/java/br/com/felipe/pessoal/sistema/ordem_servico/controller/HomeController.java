@@ -32,14 +32,14 @@ public class HomeController {
     @ResponseBody
     public String home(){
         try {
-            populateDB();
+            populateSpy();
         }catch (Exception e){
             e.printStackTrace();
         }
         return "HOME PAGE";
     }
 
-    private void populateDB() {
+    private void populateSpy() {
         List<Usuario> usuarios = new ArrayList<>();
         List<Objeto> objetos = new ArrayList<>();
         List<Cliente> clientes = new ArrayList<>();
