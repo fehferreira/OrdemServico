@@ -34,13 +34,18 @@ public class ObjetoController {
     }
 
     @PostMapping
-    public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm form, UriComponentsBuilder uri){
-        return objetoService.cadastrarObjeto(form,uri);
+    public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm formNovoObjeto, UriComponentsBuilder uri){
+        return objetoService.cadastrarObjeto(formNovoObjeto,uri);
     }
 
     @DeleteMapping
     public ResponseEntity<ObjetoDTO> deletarObjeto(@RequestParam Long id){
         return objetoService.deletarObjeto(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<ObjetoDTO> alterarObjeto(@RequestBody ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uri){
+        return objetoService.alterarObjeto(formAtualizado,uri);
     }
 
 }
