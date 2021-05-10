@@ -35,6 +35,4 @@ public class ObjetoController {
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm form, UriComponentsBuilder uri){
         return objetoService.cadastrarObjeto(form,uri);
     }
-
-
 }
