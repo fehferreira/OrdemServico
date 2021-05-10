@@ -20,6 +20,8 @@ public class Objeto {
         this.modelo = modelo;
     }
 
+    public Objeto(){}
+
     public Long getId() {
         return id;
     }
