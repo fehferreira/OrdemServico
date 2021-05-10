@@ -22,6 +22,9 @@ public class ObjetoController {
     @Autowired
     private ObjetoRepository objetoRepository;
 
+    @Autowired
+    private ObjetoService objetoService;
+
     @GetMapping
     public Page<ObjetoDTO> exibirAparelhos(@PageableDefault Pageable paginacao){
         return ObjetoDTO.converterObjetos(objetoRepository.findAll(paginacao));
@@ -29,7 +32,7 @@ public class ObjetoController {
 
     @PostMapping
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm form, UriComponentsBuilder uri){
-        
+        return objetoService.cadastrarObjeto(form,uri);
     }
 
 
