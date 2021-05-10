@@ -2,16 +2,20 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ObjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/aparelho")
@@ -33,4 +37,10 @@ public class ObjetoController {
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm form, UriComponentsBuilder uri){
         return objetoService.cadastrarObjeto(form,uri);
     }
+
+    @DeleteMapping
+    public ResponseEntity<ObjetoDTO> deletarObjeto(@RequestParam Long id){
+        return objetoService.deletarObjeto(id);
+    }
+
 }
