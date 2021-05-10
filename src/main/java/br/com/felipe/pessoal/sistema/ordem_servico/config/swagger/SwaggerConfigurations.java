@@ -1,7 +1,9 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.config.swagger;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
-import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Perfil;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.TokenDto;
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -23,7 +25,7 @@ public class SwaggerConfigurations {
                 .apis(RequestHandlerSelectors.basePackage("br.com.felipe.pessoal.sistema.ordem_servico"))
                 .paths(PathSelectors.ant("/**"))
                 .build()
-                .ignoredParameterTypes(Cliente.class, Perfil.class)
+                .ignoredParameterTypes(Cliente.class, Perfil.class, Objeto.class, OrdemServico.class, Usuario.class)
                 .globalRequestParameters(singletonList(new springfox.documentation.builders.RequestParameterBuilder()
                         .name("Authorization")
                         .description("Header para token JWT")
