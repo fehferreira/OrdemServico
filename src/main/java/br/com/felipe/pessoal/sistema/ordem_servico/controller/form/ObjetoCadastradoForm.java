@@ -1,5 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.form;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
+
 public class ObjetoCadastradoForm {
 
     private String marca;
@@ -19,5 +21,9 @@ public class ObjetoCadastradoForm {
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    public Objeto retornarObjeto() {
+        return new Objeto(this.marca, this.modelo);
     }
 }
