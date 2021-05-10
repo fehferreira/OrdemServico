@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.OrdemDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
