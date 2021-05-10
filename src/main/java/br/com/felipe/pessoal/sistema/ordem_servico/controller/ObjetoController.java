@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/aparelho")
+@RequestMapping("/objeto")
 public class ObjetoController {
 
     @Autowired

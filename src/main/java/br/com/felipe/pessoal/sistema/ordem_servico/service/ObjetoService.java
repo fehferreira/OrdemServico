@@ -32,10 +32,10 @@ public class ObjetoService {
 
     public ResponseEntity<ObjetoDTO> deletarObjeto(Long id) {
         Optional<Objeto> objeto = objetoRepository.findById(id);
-        if(objeto.isPresent()) {
-            objetoRepository.delete(objeto.get());
-            return ResponseEntity.status(HttpStatus.OK).build();
+        if(objeto.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        objetoRepository.delete(objeto.get());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
