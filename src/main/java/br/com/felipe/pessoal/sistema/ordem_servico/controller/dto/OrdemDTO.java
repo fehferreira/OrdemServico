@@ -2,6 +2,8 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller.dto;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +21,12 @@ public class OrdemDTO {
         this.dataEntrega = dataEntrega;
         this.cliente = cliente;
         this.aparelho = aparelho;
+    }
+
+    public OrdemDTO(OrdemRepository ordemRepository) {}
+
+    public static Page<OrdemDTO> converterOrdens(Page<OrdemRepository> ordens) {
+        return ordens.map(OrdemDTO::new);
     }
 
     public Long getId() {
