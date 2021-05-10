@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
@@ -37,5 +38,13 @@ public class ObjetoService {
         }
         objetoRepository.delete(objeto.get());
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    public ResponseEntity<ObjetoDTO> alterarObjeto(ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uri) {
+        Optional<Objeto> objetoAtual = objetoRepository.findById(formAtualizado.getId());
+        if(objetoAtual.isPresent()){
+            return ResponseEntity.ok(formAtualizado.atualizar(objetoAtual));
+        }
+        return ResponseEntity.notFound().build();
     }
 }

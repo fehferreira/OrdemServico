@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
