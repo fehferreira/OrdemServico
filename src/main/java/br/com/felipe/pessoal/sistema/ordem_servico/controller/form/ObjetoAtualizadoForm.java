@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.form;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
+import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 
 public class ObjetoAtualizadoForm {
 
@@ -36,4 +37,10 @@ public class ObjetoAtualizadoForm {
         return new Objeto(this.marca, this.modelo);
     }
 
+    public Objeto atualizar(Long id, ObjetoRepository objetoRepository) {
+        Objeto objetoAtual = objetoRepository.getOne(id);
+        objetoAtual.setMarca(this.marca);
+        objetoAtual.setModelo(this.modelo);
+        return objetoAtual;
+    }
 }

@@ -41,9 +41,9 @@ public class ObjetoService {
     }
 
     public ResponseEntity<ObjetoDTO> alterarObjeto(ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uri) {
-        Optional<Objeto> objetoAtual = objetoRepository.findById(formAtualizado.getId());
-        if(objetoAtual.isPresent()){
-            return ResponseEntity.ok(formAtualizado.atualizar(objetoAtual));
+        Optional<Objeto> optional = objetoRepository.findById(formAtualizado.getId());
+        if(optional.isPresent()){
+            return ResponseEntity.ok(new ObjetoDTO(formAtualizado.atualizar(formAtualizado.getId(), objetoRepository)));
         }
         return ResponseEntity.notFound().build();
     }
