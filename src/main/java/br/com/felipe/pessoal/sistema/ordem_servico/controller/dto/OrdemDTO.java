@@ -2,6 +2,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller.dto;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
+import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.springframework.data.domain.Page;
 
@@ -23,9 +24,9 @@ public class OrdemDTO {
         this.aparelho = aparelho;
     }
 
-    public OrdemDTO(OrdemRepository ordemRepository) {}
+    public OrdemDTO(OrdemServico ordemServico) {}
 
-    public static Page<OrdemDTO> converterOrdens(Page<OrdemRepository> ordens) {
+    public static Page<OrdemDTO> converterOrdens(Page<OrdemServico> ordens) {
         return ordens.map(OrdemDTO::new);
     }
 
