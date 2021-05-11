@@ -8,9 +8,10 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping("/servicos")
@@ -20,8 +21,14 @@ public class OrdemServicoController {
     private OrdemServicoService ordemService;
 
     @GetMapping
+    @ResponseBody
     public Page<OrdemDTO> exibirOrdens(@PageableDefault Pageable paginacao){
         return ordemService.exibirOrdens(paginacao);
+    }
+
+    @PostMapping
+    public ResponseEntity<OrdemDTO> cadastrarOrdem(@RequestBody OrdemServicoForm formCadastro, UriComponentsBuilder uri){
+        
     }
 
 }
