@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class OrdemServicoController {
 
     @Autowired
-    private OrdemRepository ordemRepository;
-
-    @Autowired
     private OrdemServicoService ordemService;
 
     @GetMapping
