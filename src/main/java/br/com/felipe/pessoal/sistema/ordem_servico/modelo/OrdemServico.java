@@ -25,6 +25,13 @@ public class OrdemServico {
     @ManyToOne
     private Objeto aparelho;
 
+    public OrdemServico(LocalDateTime dataEntrada, LocalDateTime dataEntrega, Cliente cliente, Objeto objeto) {
+        this.dataEntrada = dataEntrada;
+        this.dataEntrega = dataEntrega;
+        this.cliente = cliente;
+        this.aparelho = objeto;
+    }
+
     public Long getId() {
         return id;
     }

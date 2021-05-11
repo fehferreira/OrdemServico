@@ -16,8 +16,7 @@ public class OrdemDTO {
     private Cliente cliente;
     private Objeto aparelho;
 
-    public OrdemDTO(Long id, LocalDateTime dataEntrada, LocalDateTime dataEntrega, Cliente cliente, Objeto aparelho) {
-        this.id = id;
+    public OrdemDTO(LocalDateTime dataEntrada, LocalDateTime dataEntrega, Cliente cliente, Objeto aparelho) {
         this.dataEntrada = dataEntrada;
         this.dataEntrega = dataEntrega;
         this.cliente = cliente;

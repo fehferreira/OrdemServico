@@ -12,8 +12,8 @@ public class OrdemServicoForm {
     private String problemaRelatado;
     private String defeitoEncontrado;
     private String servicoExecutado;
-    private Cliente clienteId;
-    private Objeto aparelhoId;
+    private Long clienteId;
+    private Long aparelhoId;
 
     public LocalDateTime getDataEntrada() {
         return dataEntrada;
@@ -55,19 +55,19 @@ public class OrdemServicoForm {
         this.servicoExecutado = servicoExecutado;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
-    public Objeto getAparelho() {
-        return aparelho;
+    public Long getAparelhoId() {
+        return aparelhoId;
     }
 
-    public void setAparelho(Objeto aparelho) {
-        this.aparelho = aparelho;
+    public void setAparelhoId(Long aparelhoId) {
+        this.aparelhoId = aparelhoId;
     }
 }

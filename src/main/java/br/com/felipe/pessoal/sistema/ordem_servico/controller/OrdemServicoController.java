@@ -28,8 +28,9 @@ public class OrdemServicoController {
     }
 
     @PostMapping
+    @ResponseBody
     public ResponseEntity<OrdemDTO> cadastrarOrdem(@RequestBody OrdemServicoForm formCadastro, UriComponentsBuilder uri){
-
+        return ordemService.cadastrarOrdem(formCadastro,uri);
     }
 
 }
