@@ -23,7 +23,13 @@ public class OrdemDTO {
         this.aparelho = aparelho;
     }
 
-    public OrdemDTO(OrdemServico ordemServico) {}
+    public OrdemDTO(OrdemServico ordemServico) {
+        this.id = ordemServico.getId();
+        this.dataEntrada = ordemServico.getDataEntrada();
+        this.dataEntrega = ordemServico.getDataEntrega();
+        this.cliente = ordemServico.getCliente();
+        this.aparelho = ordemServico.getAparelho();
+    }
 
     public static Page<OrdemDTO> converterOrdens(Page<OrdemServico> ordens) {
         return ordens.map(OrdemDTO::new);

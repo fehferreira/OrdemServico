@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,6 +30,7 @@ public class OrdemServicoController {
 
     @PostMapping
     @ResponseBody
+    @Transactional
     public ResponseEntity<OrdemDTO> cadastrarOrdem(@RequestBody OrdemServicoForm formCadastro, UriComponentsBuilder uri){
         return ordemService.cadastrarOrdem(formCadastro,uri);
     }
