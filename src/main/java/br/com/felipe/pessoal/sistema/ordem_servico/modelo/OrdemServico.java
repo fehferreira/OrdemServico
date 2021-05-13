@@ -25,6 +25,8 @@ public class OrdemServico {
     @ManyToOne
     private Objeto aparelho;
 
+    public OrdemServico(){}
+
     public OrdemServico(LocalDateTime dataEntrada, LocalDateTime dataEntrega, Cliente cliente, Objeto objeto) {
         this.dataEntrada = dataEntrada;
         this.dataEntrega = dataEntrega;

@@ -33,13 +33,14 @@ public class OrdemServicoService {
         return OrdemDTO.converterOrdens(ordemRepository.findAll(paginacao));
     }
 
+
     public ResponseEntity<OrdemDTO> cadastrarOrdem(OrdemServicoForm formCadastro, UriComponentsBuilder uriBuilder) {
         try {
             Cliente cliente = clienteRepository.findById(formCadastro.getClienteId()).get();
             Objeto objeto = objetoRepository.findById(formCadastro.getAparelhoId()).get();
             OrdemServico novaOrdem = new OrdemServico(formCadastro.getDataEntrada(),formCadastro.getDataEntrega(),
                                                       cliente,objeto);
-
+            ordemRepository.save(novaOrdem);
             URI uri =uriBuilder.path("/servicos/${id}").buildAndExpand(novaOrdem.getId()).toUri();
             return ResponseEntity.created(uri).body(new OrdemDTO(novaOrdem));
         }catch (RuntimeException exception){
