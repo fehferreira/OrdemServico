@@ -35,4 +35,9 @@ public class OrdemServicoController {
         return ordemService.cadastrarOrdem(formCadastro,uri);
     }
 
+    @DeleteMapping
+    public ResponseEntity<OrdemDTO> deletarOrdem(@RequestParam Long id){
+        return ordemService.deletarOrdem(id);
+    }
+
 }
