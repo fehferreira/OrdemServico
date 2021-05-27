@@ -49,7 +49,7 @@ public class OrdemServicoService {
         }
     }
 
-    public ResponseEntity<OrdemDTO> deletarOrdem(@RequestParam Long id){
+    public ResponseEntity<OrdemDTO> deletarOrdem( Long id){
         if(!ordemRepository.findById(id).isPresent())
             return ResponseEntity.notFound().build();
         try{
@@ -61,6 +61,12 @@ public class OrdemServicoService {
     }
 
     public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoForm formAtualizado) {
-        return null;
+        if(!ordemRepository.findById(formAtualizado.getIdForm()).isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+        try{
+            OrdemServico ordemServico = ordemRepository.getOne(formAtualizado.getIdForm());
+            ordemServico.atualizarOrdem(ordemServico);
+        }
     }
 }

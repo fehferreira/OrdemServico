@@ -90,9 +90,7 @@ public class OrdemServico {
         this.valorServico = valorServico;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+    public Cliente getCliente() { return cliente; }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
@@ -104,5 +102,17 @@ public class OrdemServico {
 
     public void setAparelho(Objeto aparelho) {
         this.aparelho = aparelho;
+    }
+
+    public void atualizarOrdem(OrdemServico ordemServico) {
+        this.dataEntrada = ordemServico.getDataEntrada();
+        this.dataEntrega = ordemServico.getDataEntrega();
+        this.problemaRelatado = ordemServico.getProblemaRelatado();
+        this.defeitoEncontrado = ordemServico.getDefeitoEncontrado();
+        this.servicoExecutado = ordemServico.getServicoExecutado();
+        this.valorServico = ordemServico.getValorServico();
+
+        this.cliente = ordemServico.getCliente();
+        this.aparelho = ordemServico.getAparelho();
     }
 }
