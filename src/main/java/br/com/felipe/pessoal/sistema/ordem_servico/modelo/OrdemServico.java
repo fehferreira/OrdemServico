@@ -1,5 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -104,15 +106,15 @@ public class OrdemServico {
         this.aparelho = aparelho;
     }
 
-    public void atualizarOrdem(OrdemServico ordemServico) {
-        this.dataEntrada = ordemServico.getDataEntrada();
-        this.dataEntrega = ordemServico.getDataEntrega();
-        this.problemaRelatado = ordemServico.getProblemaRelatado();
-        this.defeitoEncontrado = ordemServico.getDefeitoEncontrado();
-        this.servicoExecutado = ordemServico.getServicoExecutado();
-        this.valorServico = ordemServico.getValorServico();
+    public void atualizarOrdem(OrdemServicoForm formAtualizado) {
+        this.dataEntrada = formAtualizado.getDataEntrada();
+        this.dataEntrega = formAtualizado.getDataEntrega();
+        this.problemaRelatado = formAtualizado.getProblemaRelatado();
+        this.defeitoEncontrado = formAtualizado.getDefeitoEncontrado();
+        this.servicoExecutado = formAtualizado.getServicoExecutado();
+        this.valorServico = formAtualizado.getValorServico();
 
-        this.cliente = ordemServico.getCliente();
-        this.aparelho = ordemServico.getAparelho();
+        this.cliente = formAtualizado.getCliente();
+        this.aparelho = formAtualizado.getAparelho();
     }
 }
