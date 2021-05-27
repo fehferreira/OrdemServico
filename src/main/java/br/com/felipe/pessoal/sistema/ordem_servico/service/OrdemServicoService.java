@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.OrdemDTO;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
@@ -59,7 +60,7 @@ public class OrdemServicoService {
         }
     }
 
-    public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoForm formAtualizado) {
+    public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
         if(!ordemRepository.findById(formAtualizado.getIdForm()).isPresent()){
             return ResponseEntity.notFound().build();
         }

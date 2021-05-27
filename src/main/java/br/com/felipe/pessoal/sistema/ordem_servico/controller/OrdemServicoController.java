@@ -1,6 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.OrdemDTO;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.OrdemServicoService;
@@ -43,7 +44,7 @@ public class OrdemServicoController {
 
     @PutMapping
     @ResponseBody
-    public ResponseEntity<OrdemDTO> atualizarOrdem(@RequestBody OrdemServicoForm formAtualizado){
+    public ResponseEntity<OrdemDTO> atualizarOrdem(@RequestBody OrdemServicoAtualizadaForm formAtualizado){
         return ordemService.atualizarOrdem(formAtualizado);
     }
 

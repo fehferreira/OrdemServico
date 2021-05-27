@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 
 import javax.persistence.*;
@@ -106,7 +107,7 @@ public class OrdemServico {
         this.aparelho = aparelho;
     }
 
-    public void atualizarOrdem(OrdemServicoForm formAtualizado) {
+    public void atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
         this.dataEntrada = formAtualizado.getDataEntrada();
         this.dataEntrega = formAtualizado.getDataEntrega();
         this.problemaRelatado = formAtualizado.getProblemaRelatado();
