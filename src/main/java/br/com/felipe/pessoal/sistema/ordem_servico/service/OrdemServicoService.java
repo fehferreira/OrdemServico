@@ -61,12 +61,20 @@ public class OrdemServicoService {
     }
 
     public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
-        if(!ordemRepository.findById(formAtualizado.getIdForm()).isPresent()){
+
+        if(!ordemRepository.findById(formAtualizado.getIdForm()).isPresent() ||
+           !clienteRepository.findById(formAtualizado.getClienteId()).isPresent() ||
+           !objetoRepository.findById(formAtualizado.getAparelhoId()).isPresent())
+        {
             return ResponseEntity.notFound().build();
         }
+
+        Cliente cliente = clienteRepository.findById(formAtualizado.getClienteId()).get();
+        Objeto aparelho = objetoRepository.findById(formAtualizado.getAparelhoId()).get();
+
         try{
             OrdemServico ordemServico = ordemRepository.getOne(formAtualizado.getIdForm());
-            ordemServico.atualizarOrdem(formAtualizado);
+            ordemServico.atualizarOrdem(formAtualizado, cliente, aparelho);
             return ResponseEntity.ok().body(new OrdemDTO(ordemServico));
         }catch (RuntimeException exception){
             return ResponseEntity.badRequest().build();

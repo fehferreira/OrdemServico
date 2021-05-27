@@ -17,8 +17,6 @@ public class OrdemServicoAtualizadaForm {
     private Long clienteId;
     private Long aparelhoId;
     private BigDecimal valorServico;
-    private Cliente cliente;
-    private Objeto aparelho;
 
     public Long getIdForm() { return idForm; }
 
@@ -75,13 +73,4 @@ public class OrdemServicoAtualizadaForm {
     public BigDecimal getValorServico() { return valorServico; }
 
     public void setValorServico(BigDecimal valorServico) { this.valorServico = valorServico; }
-
-    public Cliente getCliente() { return cliente; }
-
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
-
-    public Objeto getAparelho() { return aparelho; }
-
-    public void setAparelho(Objeto aparelho) { this.aparelho = aparelho; }
-
 }

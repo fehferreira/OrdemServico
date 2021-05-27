@@ -107,7 +107,7 @@ public class OrdemServico {
         this.aparelho = aparelho;
     }
 
-    public void atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
+    public void atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado, Cliente cliente, Objeto aparelho) {
         this.dataEntrada = formAtualizado.getDataEntrada();
         this.dataEntrega = formAtualizado.getDataEntrega();
         this.problemaRelatado = formAtualizado.getProblemaRelatado();
@@ -115,7 +115,7 @@ public class OrdemServico {
         this.servicoExecutado = formAtualizado.getServicoExecutado();
         this.valorServico = formAtualizado.getValorServico();
 
-        this.cliente = formAtualizado.getCliente();
-        this.aparelho = formAtualizado.getAparelho();
+        this.cliente = cliente;
+        this.aparelho = aparelho;
     }
 }
