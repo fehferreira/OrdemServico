@@ -54,9 +54,13 @@ public class OrdemServicoService {
             return ResponseEntity.notFound().build();
         try{
             ordemRepository.deleteById(id);
+            return ResponseEntity.ok().build();
         }catch(IllegalArgumentException exception){
             return ResponseEntity.badRequest().build();
         }
     }
 
+    public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoForm formAtualizado) {
+        return null;
+    }
 }

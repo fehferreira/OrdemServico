@@ -40,4 +40,11 @@ public class OrdemServicoController {
         return ordemService.deletarOrdem(id);
     }
 
+
+    @PutMapping
+    @ResponseBody
+    public ResponseEntity<OrdemDTO> atualizarOrdem(@RequestBody OrdemServicoForm formAtualizado){
+        return ordemService.atualizarOrdem(formAtualizado);
+    }
+
 }

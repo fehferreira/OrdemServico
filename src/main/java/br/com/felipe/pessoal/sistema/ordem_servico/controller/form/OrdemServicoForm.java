@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public class OrdemServicoForm {
 
+    private Long idForm;
     private LocalDateTime dataEntrada = LocalDateTime.now();
     private LocalDateTime dataEntrega;
     private String problemaRelatado;
@@ -14,6 +15,10 @@ public class OrdemServicoForm {
     private String servicoExecutado;
     private Long clienteId;
     private Long aparelhoId;
+
+    public Long getIdForm() { return idForm; }
+
+    public void setIdForm(Long idForm) { this.idForm = idForm; }
 
     public LocalDateTime getDataEntrada() {
         return dataEntrada;
@@ -55,19 +60,11 @@ public class OrdemServicoForm {
         this.servicoExecutado = servicoExecutado;
     }
 
-    public Long getClienteId() {
-        return clienteId;
-    }
+    public Long getClienteId() { return clienteId; }
 
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
+    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
 
-    public Long getAparelhoId() {
-        return aparelhoId;
-    }
+    public Long getAparelhoId() { return aparelhoId; }
 
-    public void setAparelhoId(Long aparelhoId) {
-        this.aparelhoId = aparelhoId;
-    }
+    public void setAparelhoId(Long aparelhoId) { this.aparelhoId = aparelhoId; }
 }
