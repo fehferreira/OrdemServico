@@ -66,6 +66,9 @@ public class OrdemServicoService {
         try{
             OrdemServico ordemServico = ordemRepository.getOne(formAtualizado.getIdForm());
             ordemServico.atualizarOrdem(formAtualizado);
+            return ResponseEntity.ok().body(new OrdemDTO(ordemServico));
+        }catch (RuntimeException exception){
+            return ResponseEntity.badRequest().build();
         }
     }
 }
