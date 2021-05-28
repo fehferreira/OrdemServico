@@ -1,5 +1,7 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +26,15 @@ public class OrdemServico {
 
     @ManyToOne
     private Objeto aparelho;
+
+    public OrdemServico(){}
+
+    public OrdemServico(LocalDateTime dataEntrada, LocalDateTime dataEntrega, Cliente cliente, Objeto objeto) {
+        this.dataEntrada = dataEntrada;
+        this.dataEntrega = dataEntrega;
+        this.cliente = cliente;
+        this.aparelho = objeto;
+    }
 
     public Long getId() {
         return id;
@@ -81,9 +92,7 @@ public class OrdemServico {
         this.valorServico = valorServico;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+    public Cliente getCliente() { return cliente; }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
@@ -94,6 +103,18 @@ public class OrdemServico {
     }
 
     public void setAparelho(Objeto aparelho) {
+        this.aparelho = aparelho;
+    }
+
+    public void atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado, Cliente cliente, Objeto aparelho) {
+        this.dataEntrada = formAtualizado.getDataEntrada();
+        this.dataEntrega = formAtualizado.getDataEntrega();
+        this.problemaRelatado = formAtualizado.getProblemaRelatado();
+        this.defeitoEncontrado = formAtualizado.getDefeitoEncontrado();
+        this.servicoExecutado = formAtualizado.getServicoExecutado();
+        this.valorServico = BigDecimal.valueOf(formAtualizado.getValorServico());
+
+        this.cliente = cliente;
         this.aparelho = aparelho;
     }
 }
