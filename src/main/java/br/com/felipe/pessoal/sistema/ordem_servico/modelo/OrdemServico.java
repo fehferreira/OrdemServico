@@ -1,7 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -113,7 +112,7 @@ public class OrdemServico {
         this.problemaRelatado = formAtualizado.getProblemaRelatado();
         this.defeitoEncontrado = formAtualizado.getDefeitoEncontrado();
         this.servicoExecutado = formAtualizado.getServicoExecutado();
-        this.valorServico = formAtualizado.getValorServico();
+        this.valorServico = BigDecimal.valueOf(formAtualizado.getValorServico());
 
         this.cliente = cliente;
         this.aparelho = aparelho;

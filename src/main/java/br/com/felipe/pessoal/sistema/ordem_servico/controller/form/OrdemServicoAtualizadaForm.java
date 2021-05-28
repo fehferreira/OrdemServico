@@ -1,8 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.form;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
-import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,7 +13,7 @@ public class OrdemServicoAtualizadaForm {
     private String servicoExecutado;
     private Long clienteId;
     private Long aparelhoId;
-    private BigDecimal valorServico;
+    private double valorServico;
 
     public Long getIdForm() { return idForm; }
 
@@ -70,7 +67,7 @@ public class OrdemServicoAtualizadaForm {
 
     public void setAparelhoId(Long aparelhoId) { this.aparelhoId = aparelhoId; }
 
-    public BigDecimal getValorServico() { return valorServico; }
+    public double getValorServico() { return valorServico; }
 
-    public void setValorServico(BigDecimal valorServico) { this.valorServico = valorServico; }
+    private void setValorServico(double valorServico) { this.valorServico = valorServico; }
 }

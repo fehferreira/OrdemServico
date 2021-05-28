@@ -44,6 +44,7 @@ public class OrdemServicoController {
 
     @PutMapping
     @ResponseBody
+    @Transactional
     public ResponseEntity<OrdemDTO> atualizarOrdem(@RequestBody OrdemServicoAtualizadaForm formAtualizado){
         return ordemService.atualizarOrdem(formAtualizado);
     }
