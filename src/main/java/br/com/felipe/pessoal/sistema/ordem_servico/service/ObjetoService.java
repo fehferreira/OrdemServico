@@ -17,8 +17,12 @@ import java.util.Optional;
 @Service
 public class ObjetoService {
 
-    @Autowired
     private ObjetoRepository objetoRepository;
+
+    @Autowired
+    public ObjetoService(ObjetoRepository objetoRepository) {
+        this.objetoRepository = objetoRepository;
+    }
 
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(ObjetoCadastradoForm formObjeto, UriComponentsBuilder uriBuilder) {
         Objeto novoObjeto = formObjeto.retornarObjeto();

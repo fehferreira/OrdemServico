@@ -7,6 +7,13 @@ public class ObjetoCadastradoForm {
     private String marca;
     private String modelo;
 
+    public ObjetoCadastradoForm(){}
+
+    public ObjetoCadastradoForm(String marca, String modelo) {
+        this.marca = marca;
+        this.modelo = modelo;
+    }
+
     public String getMarca() {
         return marca;
     }
