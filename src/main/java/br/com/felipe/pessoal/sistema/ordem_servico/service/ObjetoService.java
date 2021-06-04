@@ -27,7 +27,7 @@ public class ObjetoService {
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(ObjetoCadastradoForm formObjeto, UriComponentsBuilder uriBuilder) {
         Objeto novoObjeto = formObjeto.retornarObjeto();
         try{
-            objetoRepository.save(novoObjeto);
+            novoObjeto = objetoRepository.save(novoObjeto);
         }catch (RuntimeException exception){
             throw new RuntimeException("Impossível salvar este usuário.");
         }
