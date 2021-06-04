@@ -48,11 +48,11 @@ class ObjetoServiceTest {
     void enviaUmObjetoEJogaUmaException_retornaOTratamentoDaException(){
         ObjetoCadastradoForm objetoForm = new ObjetoCadastradoForm("Delphi","MT60");
 
-        Mockito.when(objetoRepositoryMock.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(objetoRepositoryMock.save(Mockito.any())).thenThrow(IllegalArgumentException.class);
         try {
             objetoService.cadastrarObjeto(objetoForm, uriBuilder);
-        }catch (Exception exception){
-            assertEquals(RuntimeException.class,exception.getClass());
+        }catch (IllegalArgumentException exception){
+            assertEquals(IllegalArgumentException.class,exception.getClass());
         }
     }
 

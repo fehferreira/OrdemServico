@@ -34,8 +34,8 @@ public class ObjetoService {
 
         try{
             novoObjeto = objetoRepository.save(novoObjeto);
-        }catch (RuntimeException exception){
-            throw new RuntimeException("Impossível salvar este usuário.");
+        }catch (IllegalArgumentException exception){
+            throw new IllegalArgumentException("Impossível salvar este usuário.",exception);
         }
         URI uri =uriBuilder.path("/aparelho/${id}").buildAndExpand(novoObjeto.getId()).toUri();
         return ResponseEntity.created(uri).body(new ObjetoDTO(novoObjeto));
