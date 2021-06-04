@@ -59,7 +59,7 @@ class ObjetoServiceTest {
     @Test
     void enviaUmObjetoComMarcaEModeloJaCadastrados_retornaUmaExceptionEspecial(){
         ObjetoCadastradoForm objetoForm = new ObjetoCadastradoForm("Delphi","MT60");
-        Mockito.when(objetoRepositoryMock.save(Mockito.any())).thenThrow(ObjetoExistenteException.class);
+        Mockito.when(objetoRepositoryMock.findByMarcaAndModelo(Mockito.any())).thenThrow(ObjetoExistenteException.class);
         try{
             objetoService.cadastrarObjeto(objetoForm,uriBuilder);
         }catch (Exception exception){

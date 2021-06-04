@@ -3,6 +3,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.service;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class ObjetoService {
 
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(ObjetoCadastradoForm formObjeto, UriComponentsBuilder uriBuilder) {
         Objeto novoObjeto = formObjeto.retornarObjeto();
+
+        if(objetoRepository.findByMarcaAndModelo(novoObjeto).isPresent()){
+            throw new ObjetoExistenteException("Objeto já existe no Banco de Dados.");
+        }
+
         try{
             novoObjeto = objetoRepository.save(novoObjeto);
         }catch (RuntimeException exception){
