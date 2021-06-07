@@ -26,7 +26,7 @@ public class ObjetoService {
         this.objetoRepository = objetoRepository;
     }
 
-    public ObjetoDTO cadastrarObjeto(ObjetoCadastradoForm formObjeto) {
+    public Objeto cadastrarObjeto(ObjetoCadastradoForm formObjeto) {
         Objeto novoObjeto = formObjeto.retornarObjeto();
         if(objetoRepository.findByMarcaAndModelo(novoObjeto).isPresent()){
             throw new ObjetoExistenteException("Objeto já existe no Banco de Dados.");
@@ -36,7 +36,7 @@ public class ObjetoService {
         }catch (IllegalArgumentException exception){
             throw new IllegalArgumentException("Impossível salvar este usuário.",exception);
         }
-        return new ObjetoDTO(novoObjeto);
+        return novoObjeto;
     }
 
     public Objeto deletarObjeto(Long id) {

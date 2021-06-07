@@ -39,13 +39,15 @@ public class ObjetoController {
     }
 
     @PostMapping
-    public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm formNovoObjeto, UriComponentsBuilder uri){
-        ObjetoDTO objetoCriado = null;
+    public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm formNovoObjeto, UriComponentsBuilder uriBuilder){
+        Objeto objetoCriado = null;
         try{
             objetoCriado = objetoService.cadastrarObjeto(formNovoObjeto);
         }catch(IllegalArgumentException | ObjetoExistenteException exception){
             return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
         }
+
+        URI uri = uriBuilder.path("/objeto/${id}").buildAndExpand(objetoCriado.getId()).toUri();
         return new ResponseEntity(objetoCriado, HttpStatus.CREATED);
     }
 
