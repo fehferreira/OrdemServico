@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
@@ -14,7 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -119,6 +123,30 @@ class ObjetoServiceTest {
         }
 
         Mockito.verify(objetoRepositoryMock).findById(Mockito.any());
+    }
+
+    @Test
+    void retornaUmaListaDeObjetosDTO(){
+        List<ObjetoDTO> objetos =
+                criaListaObjetos().stream().map(ObjetoDTO::new).collect(Collectors.toList());
+
+        Mockito.when(objetoRepositoryMock.findAll()).thenReturn(objetos);
+        List<ObjetoDTO> retornoObjetos = objetoService.exibirObjetos();
+
+        assertEquals(objetos,retornoObjetos);
+    }
+
+    private List<Objeto> criaListaObjetos(){
+        Objeto objeto1 = new Objeto(1L,"MARELLI","IAW 1G7");
+        Objeto objeto2 = new Objeto(2L,"BOSCH","ME796");
+        Objeto objeto3 = new Objeto(3L,"FORD","EEC-V");
+
+        List<Objeto> objetos = new ArrayList<>();
+        objetos.add(objeto1);
+        objetos.add(objeto2);
+        objetos.add(objeto3);
+
+        return objetos;
     }
 
 }
