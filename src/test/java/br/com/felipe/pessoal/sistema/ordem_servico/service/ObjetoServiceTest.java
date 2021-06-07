@@ -40,12 +40,10 @@ class ObjetoServiceTest {
 
         Mockito.when(objetoRepositoryMock.save(Mockito.any())).thenReturn(objetoCadastrado);
 
-        ResponseEntity<ObjetoDTO> objetoDTOResponseEntity =
-                objetoService.cadastrarObjeto(objetoForm, uriBuilder);
+        Objeto retornoObjetoService = objetoService.cadastrarObjeto(objetoForm);
 
-        assertEquals(HttpStatus.CREATED,objetoDTOResponseEntity.getStatusCode());
-        assertEquals(objetoCadastrado.getMarca(),objetoDTOResponseEntity.getBody().getMarca());
-        assertEquals(objetoCadastrado.getModelo(),objetoDTOResponseEntity.getBody().getModelo());
+        assertEquals(objetoCadastrado.getMarca(),retornoObjetoService.getMarca());
+        assertEquals(objetoCadastrado.getModelo(),retornoObjetoService.getModelo());
     }
 
     @Test
@@ -54,8 +52,8 @@ class ObjetoServiceTest {
 
         Mockito.when(objetoRepositoryMock.save(Mockito.any())).thenThrow(IllegalArgumentException.class);
         try {
-            objetoService.cadastrarObjeto(objetoForm, uriBuilder);
-        }catch (IllegalArgumentException exception){
+            objetoService.cadastrarObjeto(objetoForm);
+        }catch (Exception exception){
             assertEquals(IllegalArgumentException.class,exception.getClass());
         }
     }
@@ -65,7 +63,7 @@ class ObjetoServiceTest {
         ObjetoCadastradoForm objetoForm = new ObjetoCadastradoForm("Delphi","MT60");
         Mockito.when(objetoRepositoryMock.findByMarcaAndModelo(Mockito.any())).thenThrow(ObjetoExistenteException.class);
         try{
-            objetoService.cadastrarObjeto(objetoForm,uriBuilder);
+            objetoService.cadastrarObjeto(objetoForm);
         }catch (Exception exception){
             assertEquals(ObjetoExistenteException.class, exception.getClass());
         }
@@ -77,15 +75,17 @@ class ObjetoServiceTest {
         objetoSalvo.setId(1L);
         Mockito.when(objetoRepositoryMock.findById(objetoSalvo.getId())).thenReturn(Optional.of(objetoSalvo));
 
-        ResponseEntity<ObjetoDTO> response = objetoService.deletarObjeto(objetoSalvo.getId());
+        Objeto objetoDeletado = objetoService.deletarObjeto(objetoSalvo.getId());
 
-        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(objetoSalvo.getId(), objetoDeletado.getId());
+        assertEquals(objetoSalvo.getModelo(), objetoDeletado.getModelo());
+        assertEquals(objetoSalvo.getMarca(), objetoDeletado.getMarca());
     }
 
     @Test
     void enviaUmIdDeUmObjetoInexistente_retornaUmaExceptionsEspecial(){
         try{
-            ResponseEntity<ObjetoDTO> response = objetoService.deletarObjeto(1L);
+            objetoService.deletarObjeto(1L);
         }catch(ObjetoInexistenteException exception){
             assertEquals(ObjetoInexistenteException.class, exception.getClass());
         }
