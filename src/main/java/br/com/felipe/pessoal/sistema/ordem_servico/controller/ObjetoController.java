@@ -3,6 +3,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.NenhumObjetoCadastradoException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
@@ -20,26 +21,30 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping("/objeto")
 public class ObjetoController {
 
     @Autowired
-    private ObjetoRepository objetoRepository;
-
-    @Autowired
     private ObjetoService objetoService;
 
     @GetMapping
     @ResponseBody
-    public Page<ObjetoDTO> exibirAparelhos(@PageableDefault Pageable paginacao){
-        return ObjetoDTO.converterObjetos(objetoRepository.findAll(paginacao));
+    public ResponseEntity<List<ObjetoDTO>> exibirAparelhos(@PageableDefault Pageable paginacao){
+        List<Objeto> listaObjetos;
+        try{
+            listaObjetos = objetoService.exibirObjetos();
+        }catch (NenhumObjetoCadastradoException exception){
+            return new ResponseEntity(exception, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(listaObjetos, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm formNovoObjeto, UriComponentsBuilder uriBuilder){
-        Objeto objetoCriado = null;
+        Objeto objetoCriado;
         try{
             objetoCriado = objetoService.cadastrarObjeto(formNovoObjeto);
         }catch(IllegalArgumentException | ObjetoExistenteException exception){
@@ -52,7 +57,7 @@ public class ObjetoController {
 
     @DeleteMapping
     public ResponseEntity<ObjetoDTO> deletarObjeto(@RequestParam Long id){
-        ObjetoDTO objetoDeletado = null;
+        ObjetoDTO objetoDeletado;
         try{
             objetoDeletado = new ObjetoDTO(objetoService.deletarObjeto(id));
         }catch(ObjetoInexistenteException exception){
@@ -64,7 +69,7 @@ public class ObjetoController {
     @PutMapping
     @Transactional
     public ResponseEntity<ObjetoDTO> alterarObjeto(@RequestBody ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uriBuilder){
-        Objeto objetoAtualizado = null;
+        Objeto objetoAtualizado;
 
         try{
             objetoAtualizado = objetoService.alterarObjeto(formAtualizado);
