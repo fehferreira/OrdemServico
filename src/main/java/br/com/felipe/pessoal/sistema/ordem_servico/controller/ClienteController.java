@@ -3,6 +3,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ClienteService;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,11 +39,11 @@ public class ClienteController {
     public ResponseEntity<ClienteDetalhadoDto> detalharCliente(@PathVariable Long id){
         ClienteDetalhadoDto cliente;
         try{
-            cliente = new ClienteDetalhadoDto(clienteRepository.findById(id).get());
-        }catch(IllegalArgumentException exception){
-            return ResponseEntity.notFound().build();
+            cliente = new ClienteDetalhadoDto(clienteService.detalharCliente(id));
+        }catch(ClienteInexistenteException exception){
+            return new ResponseEntity(exception, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(cliente);
+        return new ResponseEntity(cliente, HttpStatus.OK);
     }
 
     @PostMapping
