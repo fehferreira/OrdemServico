@@ -4,6 +4,7 @@ import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ObjetoService;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @Controller
@@ -49,13 +51,28 @@ public class ObjetoController {
 
     @DeleteMapping
     public ResponseEntity<ObjetoDTO> deletarObjeto(@RequestParam Long id){
-        return objetoService.deletarObjeto(id);
+        ObjetoDTO objetoDeletado = null;
+        try{
+            objetoDeletado = new ObjetoDTO(objetoService.deletarObjeto(id));
+        }catch(ObjetoInexistenteException exception){
+            return new ResponseEntity(exception,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(objetoDeletado, HttpStatus.OK);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<ObjetoDTO> alterarObjeto(@RequestBody ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uri){
-        return objetoService.alterarObjeto(formAtualizado,uri);
+    public ResponseEntity<ObjetoDTO> alterarObjeto(@RequestBody ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uriBuilder){
+        Objeto objetoAtualizado = null;
+
+        try{
+            objetoAtualizado = objetoService.alterarObjeto(formAtualizado);
+        }catch(ObjetoInexistenteException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        URI uri = uriBuilder.path("/objeto/${id}").buildAndExpand(objetoAtualizado.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ObjetoDTO(objetoAtualizado));
     }
 
 }

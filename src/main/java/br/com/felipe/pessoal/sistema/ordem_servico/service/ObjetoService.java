@@ -39,20 +39,21 @@ public class ObjetoService {
         return new ObjetoDTO(novoObjeto);
     }
 
-    public boolean deletarObjeto(Long id) {
+    public Objeto deletarObjeto(Long id) {
         Optional<Objeto> objeto = objetoRepository.findById(id);
         if(objeto.isEmpty()) {
             throw new ObjetoInexistenteException("Este objeto não existe no Banco de Dados.");
         }
-        objetoRepository.delete(objeto.get());
-        return true;
+        Objeto objetoDeletado = objeto.get();
+        objetoRepository.delete(objetoDeletado);
+        return objetoDeletado;
     }
 
-    public ObjetoDTO alterarObjeto(ObjetoAtualizadoForm formAtualizado) {
+    public Objeto alterarObjeto(ObjetoAtualizadoForm formAtualizado) {
         Optional<Objeto> optional = objetoRepository.findById(formAtualizado.getId());
         if(optional.isPresent()){
             throw new ObjetoInexistenteException("Este objeto não existe no Banco de Dados.");
         }
-        return new ObjetoDTO(formAtualizado.atualizar(formAtualizado.getId(), objetoRepository));
+        return formAtualizado.atualizar(formAtualizado.getId(), objetoRepository);
     }
 }
