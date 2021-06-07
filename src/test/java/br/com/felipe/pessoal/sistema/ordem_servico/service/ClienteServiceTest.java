@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import org.junit.jupiter.api.Test;
@@ -11,9 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class ClienteServiceTest {
@@ -54,6 +57,41 @@ class ClienteServiceTest {
         assertEquals(listaCliente.get(0).getNome(),listaRetorno.get(0).getNome());
         assertEquals(listaCliente.get(0).getCpf(),listaRetorno.get(0).getCpf());
         assertEquals(listaCliente.get(0).getEndereco(),listaRetorno.get(0).getEndereco());
+    }
+
+    @Test
+    void solicitaUmaListaDeClientesEmUmBDVazio_retornaUmaListaVazia(){
+        List<Cliente> clientes = clienteService.listarClientes(null);
+        assertTrue(clientes.isEmpty());
+    }
+
+    @Test
+    void solicitaUmClienteDetalhado_retornaUmClienteDetalhado(){
+        Cliente cliente = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
+        cliente.setId(97L);
+
+        Mockito.when(clienteRepositoryMock.findById(97L)).thenReturn(Optional.of(cliente));
+        Cliente clienteDetalhado = clienteService.detalharCliente(97L);
+
+        assertEquals(cliente.getId(), clienteDetalhado.getId());
+        assertEquals(cliente.getNome(), clienteDetalhado.getNome());
+        assertEquals(cliente.getCpf(), clienteDetalhado.getCpf());
+        assertEquals(cliente.getEndereco(), clienteDetalhado.getEndereco());
+    }
+
+    @Test
+    void solicitaUmClienteDetalhadoSemPassarOID_retornaUmaExcessao(){
+        Cliente cliente = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
+        cliente.setId(97L);
+
+        try{
+            Mockito.when(clienteRepositoryMock.findById(97L)).thenReturn(Optional.of(cliente));
+            clienteService.detalharCliente(97L);
+        }catch (Exception exception){
+            assertEquals(ClienteInexistenteException.class, exception.getClass());
+        }
+
+        Mockito.verify(clienteRepositoryMock).findById(Mockito.any());
     }
 
 
