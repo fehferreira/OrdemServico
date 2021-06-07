@@ -5,6 +5,7 @@ import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
+import br.com.felipe.pessoal.sistema.ordem_servico.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,23 +16,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @ResponseBody
     @GetMapping
-    public Page<ClienteDto> listarClientes(@RequestParam(required = false) String nome,
-                                           @PageableDefault(sort="id", direction = Sort.Direction.ASC) Pageable paginacao){
-        if(nome != null){
-            return ClienteDto.converter(clienteRepository.findAllByNome(nome, paginacao));
-        }
-        return ClienteDto.converter(clienteRepository.findAll(paginacao));
+    public List<ClienteDto> listarClientes(@RequestParam(required = false) String nome){
+        return clienteService.listarClientes(nome).stream().map(ClienteDto::new).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
