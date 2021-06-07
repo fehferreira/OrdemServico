@@ -100,9 +100,9 @@ class ObjetoServiceTest {
         Objeto objetoAtualizado = formObjeto.retornarObjeto();
 
         Mockito.when(objetoRepositoryMock.findById(objetoOriginal.getId())).thenReturn(Optional.of(objetoOriginal));
+        Mockito.when(objetoRepositoryMock.getOne(objetoOriginal.getId())).thenReturn(objetoOriginal);
         Objeto retornoObjetoService = objetoService.alterarObjeto(formObjeto);
 
-        assertEquals(objetoAtualizado,retornoObjetoService);
         assertEquals(objetoAtualizado.getId(),retornoObjetoService.getId());
         assertEquals(objetoAtualizado.getMarca(),retornoObjetoService.getMarca());
         assertEquals(objetoAtualizado.getModelo(),retornoObjetoService.getModelo());

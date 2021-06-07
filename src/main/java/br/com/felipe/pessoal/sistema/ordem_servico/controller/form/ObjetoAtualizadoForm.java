@@ -40,7 +40,7 @@ public class ObjetoAtualizadoForm {
     }
 
     public Objeto retornarObjeto() {
-        return new Objeto(this.marca, this.modelo);
+        return new Objeto(this.id,this.marca, this.modelo);
     }
 
     public Objeto atualizar(Long id, ObjetoRepository objetoRepository) {

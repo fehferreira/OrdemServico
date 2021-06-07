@@ -46,7 +46,7 @@ public class ObjetoService {
 
     public Objeto alterarObjeto(ObjetoAtualizadoForm formAtualizado) {
         Optional<Objeto> optional = objetoRepository.findById(formAtualizado.getId());
-        if(optional.isPresent()){
+        if(optional.isEmpty()){
             throw new ObjetoInexistenteException("Este objeto não existe no Banco de Dados.");
         }
         return formAtualizado.atualizar(formAtualizado.getId(), objetoRepository);
