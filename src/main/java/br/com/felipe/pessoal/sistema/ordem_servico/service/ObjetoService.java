@@ -26,7 +26,7 @@ public class ObjetoService {
         this.objetoRepository = objetoRepository;
     }
 
-    public ObjetoDTO cadastrarObjeto(ObjetoCadastradoForm formObjeto, UriComponentsBuilder uriBuilder) {
+    public ObjetoDTO cadastrarObjeto(ObjetoCadastradoForm formObjeto) {
         Objeto novoObjeto = formObjeto.retornarObjeto();
         if(objetoRepository.findByMarcaAndModelo(novoObjeto).isPresent()){
             throw new ObjetoExistenteException("Objeto já existe no Banco de Dados.");
@@ -48,7 +48,7 @@ public class ObjetoService {
         return true;
     }
 
-    public ObjetoDTO alterarObjeto(ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uri) {
+    public ObjetoDTO alterarObjeto(ObjetoAtualizadoForm formAtualizado) {
         Optional<Objeto> optional = objetoRepository.findById(formAtualizado.getId());
         if(optional.isPresent()){
             throw new ObjetoInexistenteException("Este objeto não existe no Banco de Dados.");

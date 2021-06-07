@@ -3,6 +3,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ObjetoService;
@@ -37,7 +38,13 @@ public class ObjetoController {
 
     @PostMapping
     public ResponseEntity<ObjetoDTO> cadastrarObjeto(@RequestBody ObjetoCadastradoForm formNovoObjeto, UriComponentsBuilder uri){
-        return objetoService.cadastrarObjeto(formNovoObjeto,uri);
+        ObjetoDTO objetoCriado = null;
+        try{
+            objetoCriado = objetoService.cadastrarObjeto(formNovoObjeto);
+        }catch(IllegalArgumentException | ObjetoExistenteException exception){
+            return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(objetoCriado, HttpStatus.CREATED);
     }
 
     @DeleteMapping
