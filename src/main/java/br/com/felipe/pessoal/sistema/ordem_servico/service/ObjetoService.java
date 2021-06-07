@@ -3,48 +3,63 @@ package br.com.felipe.pessoal.sistema.ordem_servico.service;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.NenhumObjetoCadastradoException;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ObjetoService {
 
-    @Autowired
     private ObjetoRepository objetoRepository;
 
-    public ResponseEntity<ObjetoDTO> cadastrarObjeto(ObjetoCadastradoForm formObjeto, UriComponentsBuilder uriBuilder) {
-        Objeto novoObjeto = formObjeto.retornarObjeto();
-        try{
-            objetoRepository.save(novoObjeto);
-        }catch (RuntimeException exception){
-            throw new RuntimeException("Impossível salvar este usuário.");
-        }
-        URI uri =uriBuilder.path("/aparelho/${id}").buildAndExpand(novoObjeto.getId()).toUri();
-        return ResponseEntity.created(uri).body(new ObjetoDTO(novoObjeto));
+    @Autowired
+    public ObjetoService(ObjetoRepository objetoRepository) {
+        this.objetoRepository = objetoRepository;
     }
 
-    public ResponseEntity<ObjetoDTO> deletarObjeto(Long id) {
+    public Objeto cadastrarObjeto(ObjetoCadastradoForm formObjeto) {
+        Objeto novoObjeto = formObjeto.retornarObjeto();
+        if(objetoRepository.findByMarcaAndModelo(novoObjeto).isPresent()){
+            throw new ObjetoExistenteException("Objeto já existe no Banco de Dados.");
+        }
+        try{
+            novoObjeto = objetoRepository.save(novoObjeto);
+        }catch (IllegalArgumentException exception){
+            throw new IllegalArgumentException("Impossível salvar este usuário.",exception);
+        }
+        return novoObjeto;
+    }
+
+    public Objeto deletarObjeto(Long id) {
         Optional<Objeto> objeto = objetoRepository.findById(id);
         if(objeto.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            throw new ObjetoInexistenteException("Este objeto não existe no Banco de Dados.");
         }
-        objetoRepository.delete(objeto.get());
-        return ResponseEntity.status(HttpStatus.OK).build();
+        Objeto objetoDeletado = objeto.get();
+        objetoRepository.delete(objetoDeletado);
+        return objetoDeletado;
     }
 
-    public ResponseEntity<ObjetoDTO> alterarObjeto(ObjetoAtualizadoForm formAtualizado, UriComponentsBuilder uri) {
+    public Objeto alterarObjeto(ObjetoAtualizadoForm formAtualizado) {
         Optional<Objeto> optional = objetoRepository.findById(formAtualizado.getId());
-        if(optional.isPresent()){
-            return ResponseEntity.ok(new ObjetoDTO(formAtualizado.atualizar(formAtualizado.getId(), objetoRepository)));
+        if(optional.isEmpty()){
+            throw new ObjetoInexistenteException("Este objeto não existe no Banco de Dados.");
         }
-        return ResponseEntity.notFound().build();
+        return formAtualizado.atualizar(formAtualizado.getId(), objetoRepository);
+    }
+
+    public List<Objeto> exibirObjetos() {
+        List<Objeto> objetos = objetoRepository.findAll();
+        if(objetos.isEmpty()){
+            throw new NenhumObjetoCadastradoException("Nenhum objeto encontrado no Banco de Dados!");
+        }
+        return objetos;
     }
 }
