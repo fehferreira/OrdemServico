@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
@@ -18,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -126,13 +124,10 @@ class ObjetoServiceTest {
     }
 
     @Test
-    void retornaUmaListaDeObjetosDTO(){
-        List<ObjetoDTO> objetos =
-                criaListaObjetos().stream().map(ObjetoDTO::new).collect(Collectors.toList());
-
+    void retornaUmaListaDeObjetos(){
+        List<Objeto> objetos = criaListaObjetos();
         Mockito.when(objetoRepositoryMock.findAll()).thenReturn(objetos);
-        List<ObjetoDTO> retornoObjetos = objetoService.exibirObjetos();
-
+        List<Objeto> retornoObjetos = objetoService.exibirObjetos();
         assertEquals(objetos,retornoObjetos);
     }
 
