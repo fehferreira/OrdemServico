@@ -39,22 +39,22 @@ public class ClienteService {
         }
         try {
             cliente = clienteRepository.save(cliente);
+            return cliente;
         }catch(IllegalArgumentException exception){
             throw exception;
         }
 
-        return cliente;
+
     }
 
     public Cliente atualizarCliente(Long id, CadastrarClienteForm form) {
-        Cliente clienteLink;
         try{
+            Cliente clienteLink;
             clienteLink = atualizarClienteLinkado(id, form);
+            return clienteLink;
         }catch (EntityNotFoundException exception){
             throw exception;
         }
-
-        return clienteLink;
     }
 
     public Cliente atualizarClienteLinkado(Long id, CadastrarClienteForm form) {
