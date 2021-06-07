@@ -108,4 +108,17 @@ class ObjetoServiceTest {
         assertEquals(objetoAtualizado.getModelo(),retornoObjetoService.getModelo());
     }
 
+    @Test
+    void enviaUmFormSemId_retornaUmaException(){
+        ObjetoAtualizadoForm formObjeto = new ObjetoAtualizadoForm(null,"BOSCH","ME796");
+
+        try {
+            objetoService.alterarObjeto(formObjeto);
+        }catch (Exception exception){
+            assertEquals(ObjetoInexistenteException.class, exception.getClass());
+        }
+
+        Mockito.verify(objetoRepositoryMock).findById(Mockito.any());
+    }
+
 }
