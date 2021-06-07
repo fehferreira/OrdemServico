@@ -81,12 +81,24 @@ class ClienteServiceTest {
 
     @Test
     void solicitaUmClienteDetalhadoSemPassarOID_retornaUmaExcessao(){
+        try{
+            Mockito.when(clienteRepositoryMock.findById(Mockito.any())).thenThrow(IllegalArgumentException.class);
+            clienteService.detalharCliente(null);
+        }catch (Exception exception){
+            assertEquals(IllegalArgumentException.class, exception.getClass());
+        }
+
+        Mockito.verify(clienteRepositoryMock).findById(Mockito.any());
+    }
+
+    @Test
+    void solicitaUmClienteInexistenteNoBanco_retornaUmaExcessao(){
         Cliente cliente = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
-        cliente.setId(97L);
+        cliente.setId(5L);
 
         try{
-            Mockito.when(clienteRepositoryMock.findById(97L)).thenReturn(Optional.of(cliente));
-            clienteService.detalharCliente(97L);
+            Mockito.when(clienteRepositoryMock.findById(Mockito.any())).thenReturn(Optional.empty());
+            clienteService.detalharCliente(1L);
         }catch (Exception exception){
             assertEquals(ClienteInexistenteException.class, exception.getClass());
         }

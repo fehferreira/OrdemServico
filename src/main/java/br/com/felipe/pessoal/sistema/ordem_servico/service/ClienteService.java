@@ -43,8 +43,6 @@ public class ClienteService {
         }catch(IllegalArgumentException exception){
             throw exception;
         }
-
-
     }
 
     public Cliente atualizarCliente(Long id, CadastrarClienteForm form) {
