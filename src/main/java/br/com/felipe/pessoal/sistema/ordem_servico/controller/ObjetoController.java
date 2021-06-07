@@ -9,6 +9,7 @@ import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteE
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ObjetoService;
+import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,7 @@ public class ObjetoController {
         }
 
         URI uri = uriBuilder.path("/objeto/${id}").buildAndExpand(objetoCriado.getId()).toUri();
-        return new ResponseEntity(objetoCriado, HttpStatus.CREATED);
+        return ResponseEntity.created(uri).body(new ObjetoDTO(objetoCriado));
     }
 
     @DeleteMapping
