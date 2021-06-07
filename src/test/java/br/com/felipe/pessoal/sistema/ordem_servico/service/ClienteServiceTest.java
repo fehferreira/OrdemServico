@@ -10,10 +10,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class ClienteServiceTest {
@@ -37,7 +37,26 @@ class ClienteServiceTest {
 
     }
 
-    
+    @Test
+    void solicitaUmaListaDeClientesComFiltroDeNome_retornaUmaListaFiltrada(){
+        List<Cliente> clientes = criaListaClientes();
+        String valorFiltro = "Felipe Ferreira";
+
+        Mockito.when(clienteRepositoryMock.findAllByNome(valorFiltro))
+                .thenReturn(clientes.stream().filter(cliente -> cliente.getNome().contains(valorFiltro)).collect(Collectors.toList()));
+
+        List<Cliente> listaRetorno = clienteService.listarClientes(valorFiltro);
+
+        List<Cliente> listaCliente = List.of(clientes.get(0));
+
+        assertEquals(listaCliente.size(),listaRetorno.size());
+        assertEquals(listaCliente.get(0).getId(),listaRetorno.get(0).getId());
+        assertEquals(listaCliente.get(0).getNome(),listaRetorno.get(0).getNome());
+        assertEquals(listaCliente.get(0).getCpf(),listaRetorno.get(0).getCpf());
+        assertEquals(listaCliente.get(0).getEndereco(),listaRetorno.get(0).getEndereco());
+    }
+
+
 
     private List<Cliente> criaListaClientes(){
         Cliente cliente1 = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
