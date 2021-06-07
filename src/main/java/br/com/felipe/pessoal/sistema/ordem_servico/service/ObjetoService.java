@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
@@ -8,12 +7,8 @@ import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteE
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Optional;
 
 @Service

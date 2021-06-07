@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
@@ -11,10 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
@@ -33,7 +29,7 @@ class ObjetoServiceTest {
     private UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
 
     @Test
-    void enviaUmObjetoEUmaUriBuilder_retornaOObjetoCadastradoJuntoCom201Status(){
+    void enviaUmObjeto_retornaOObjetoCadastrado(){
         ObjetoCadastradoForm objetoForm = new ObjetoCadastradoForm("Delphi","MT60");
         Objeto objetoCadastrado = objetoForm.retornarObjeto();
         objetoCadastrado.setId(1L);
@@ -70,7 +66,7 @@ class ObjetoServiceTest {
     }
 
     @Test
-    void enviaUmId_retornaHttpStatus200(){
+    void enviaUmId_retornaOObjetoDeletado(){
         Objeto objetoSalvo = new Objeto("Delphi", "MT60");
         objetoSalvo.setId(1L);
         Mockito.when(objetoRepositoryMock.findById(objetoSalvo.getId())).thenReturn(Optional.of(objetoSalvo));
