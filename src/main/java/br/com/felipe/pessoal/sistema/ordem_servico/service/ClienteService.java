@@ -67,4 +67,14 @@ public class ClienteService {
             clienteAtualizado.setEndereco(form.getEndereco());
         return clienteAtualizado;
     }
+
+    public Cliente deletarCliente(Long id) {
+        try{
+            Cliente cliente = clienteRepository.findById(id).get();
+            clienteRepository.deleteById(id);
+            return cliente;
+        }catch (IllegalArgumentException exception){
+            throw exception;
+        }
+    }
 }

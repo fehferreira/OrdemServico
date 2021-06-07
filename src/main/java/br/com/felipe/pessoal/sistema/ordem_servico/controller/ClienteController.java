@@ -79,12 +79,11 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarCliente(@PathVariable Long id){
+    public ResponseEntity<ClienteDto> deletarCliente(@PathVariable Long id){
         try{
-            clienteRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        }catch(Exception e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new ClienteDto(clienteService.deletarCliente(id)));
+        }catch(EntityNotFoundException exception){
+            return new ResponseEntity(exception, HttpStatus.NOT_FOUND);
         }
     }
 
