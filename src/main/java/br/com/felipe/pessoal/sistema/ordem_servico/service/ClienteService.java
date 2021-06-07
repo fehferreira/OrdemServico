@@ -1,17 +1,14 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +44,27 @@ public class ClienteService {
         }
 
         return cliente;
+    }
+
+    public Cliente atualizarCliente(Long id, CadastrarClienteForm form) {
+        Cliente clienteLink;
+        try{
+            clienteLink = atualizarClienteLinkado(id, form);
+        }catch (EntityNotFoundException exception){
+            throw exception;
+        }
+
+        return clienteLink;
+    }
+
+    public Cliente atualizarClienteLinkado(Long id, CadastrarClienteForm form) {
+        Cliente clienteAtualizado = clienteRepository.getOne(id);
+        if(!form.getNome().isEmpty())
+            clienteAtualizado.setNome(form.getNome());
+        if(!form.getCpf().isEmpty())
+            clienteAtualizado.setCpf(form.getCpf());
+        if(!form.getEndereco().isEmpty())
+            clienteAtualizado.setEndereco(form.getEndereco());
+        return clienteAtualizado;
     }
 }

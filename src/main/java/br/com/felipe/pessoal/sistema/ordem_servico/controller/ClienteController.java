@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -66,12 +67,15 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id , @RequestBody CadastrarClienteForm form ){
-        Optional<Cliente> clienteBanco = clienteRepository.findById(id);
-        if(clienteBanco.isPresent()){
-            Cliente clienteAtual = form.atualizarCliente(id,clienteRepository);
-            return ResponseEntity.ok(new ClienteDto(clienteAtual));
+        Cliente clienteAtualizado;
+
+        try {
+            clienteAtualizado = clienteService.atualizarCliente(id, form);
+        }catch (EntityNotFoundException exception){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+
+        return new ResponseEntity(clienteAtualizado,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
