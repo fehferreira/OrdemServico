@@ -2,6 +2,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.NenhumObjetoCadastradoException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
@@ -129,6 +130,17 @@ class ObjetoServiceTest {
         Mockito.when(objetoRepositoryMock.findAll()).thenReturn(objetos);
         List<Objeto> retornoObjetos = objetoService.exibirObjetos();
         assertEquals(objetos,retornoObjetos);
+    }
+
+    @Test
+    void solicitaUmaListaDeObjetosSemObjetosCadastrados_retornaUmaExcessãoEspecial(){
+        try{
+            objetoService.exibirObjetos();
+        }catch (Exception exception){
+            assertEquals(NenhumObjetoCadastradoException.class, exception.getClass());
+        }
+
+        Mockito.verify(objetoRepositoryMock).findAll();
     }
 
     private List<Objeto> criaListaObjetos(){
