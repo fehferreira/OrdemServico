@@ -3,6 +3,7 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
@@ -49,7 +50,14 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ClienteDto> cadastrarCliente(@RequestBody CadastrarClienteForm form, UriComponentsBuilder uriBuilder){
         Cliente cliente = form.retornarCliente();
-        clienteRepository.save(cliente);
+
+        try {
+            cliente = clienteService.cadastrarCliente(cliente);
+        }catch(ClienteExistenteException exception){
+            return new ResponseEntity(exception, HttpStatus.FOUND);
+        }catch (IllegalArgumentException exception){
+            return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
+        }
 
         URI uri =uriBuilder.path("/clientes/${id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(uri).body(new ClienteDto(cliente));
