@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
@@ -89,5 +90,22 @@ class ObjetoServiceTest {
         Mockito.verify(objetoRepositoryMock).findById(Mockito.any());
         Mockito.verifyNoMoreInteractions(objetoRepositoryMock);
     }
-    
+
+    @Test
+    void enviaUmFormComObjetoParaAtualizar_retornaOObjetoAtualizado(){
+        Objeto objetoOriginal = new Objeto("Marelli", "IAW 4AFB");
+        objetoOriginal.setId(1L);
+
+        ObjetoAtualizadoForm formObjeto = new ObjetoAtualizadoForm(objetoOriginal.getId(),"BOSCH","ME796");
+        Objeto objetoAtualizado = formObjeto.retornarObjeto();
+
+        Mockito.when(objetoRepositoryMock.findById(objetoOriginal.getId())).thenReturn(Optional.of(objetoOriginal));
+        Objeto retornoObjetoService = objetoService.alterarObjeto(formObjeto);
+
+        assertEquals(objetoAtualizado,retornoObjetoService);
+        assertEquals(objetoAtualizado.getId(),retornoObjetoService.getId());
+        assertEquals(objetoAtualizado.getMarca(),retornoObjetoService.getMarca());
+        assertEquals(objetoAtualizado.getModelo(),retornoObjetoService.getModelo());
+    }
+
 }

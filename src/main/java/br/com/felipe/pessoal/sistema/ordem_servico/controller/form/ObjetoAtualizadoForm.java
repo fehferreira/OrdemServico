@@ -9,6 +9,12 @@ public class ObjetoAtualizadoForm {
     private String marca;
     private String modelo;
 
+    public ObjetoAtualizadoForm(Long id, String marca, String modelo) {
+        this.id = id;
+        this.marca = marca;
+        this.modelo = modelo;
+    }
+
     public Long getId() {
         return id;
     }
