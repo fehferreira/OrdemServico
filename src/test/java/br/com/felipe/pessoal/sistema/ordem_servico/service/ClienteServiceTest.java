@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ClienteServiceTest {
@@ -163,6 +162,42 @@ class ClienteServiceTest {
             assertEquals(EntityNotFoundException.class,exception.getClass());
         }
         Mockito.verify(clienteRepositoryMock).getOne(Mockito.any());
+    }
+
+    @Test
+    void solicitaAtualizacaoParcialDoCliente_retornaUmCLienteParcialmenteAtualizado(){
+        CadastrarClienteForm form = criarFormDeCadastro();
+        form.setCpf("");
+        form.setEndereco("");
+
+        Cliente clienteAntigo = new Cliente("Rogerio Almeida", "78965412303", "Rua dos palmares");
+        clienteAntigo.setId(57L);
+
+        Mockito.when(clienteRepositoryMock.getOne(57L)).thenReturn(clienteAntigo);
+        Cliente clienteAtualizado = clienteService.atualizarCliente(57L, form);
+
+        assertEquals(57L,clienteAtualizado.getId());
+        assertEquals(form.getNome(),clienteAtualizado.getNome());
+        assertNotEquals(form.getCpf(),clienteAtualizado.getCpf());
+        assertNotEquals(form.getEndereco(),clienteAtualizado.getEndereco());
+
+        form.setCpf("12365479884");
+
+        clienteAtualizado = clienteService.atualizarCliente(57L, form);
+
+        assertEquals(57L,clienteAtualizado.getId());
+        assertEquals(form.getNome(),clienteAtualizado.getNome());
+        assertEquals(form.getCpf(),clienteAtualizado.getCpf());
+        assertNotEquals(form.getEndereco(),clienteAtualizado.getEndereco());
+
+        form.setEndereco("Rua dos tamanduateís 54");
+
+        clienteAtualizado = clienteService.atualizarCliente(57L, form);
+
+        assertEquals(57L,clienteAtualizado.getId());
+        assertEquals(form.getNome(),clienteAtualizado.getNome());
+        assertEquals(form.getCpf(),clienteAtualizado.getCpf());
+        assertEquals(form.getEndereco(),clienteAtualizado.getEndereco());
     }
 
 
