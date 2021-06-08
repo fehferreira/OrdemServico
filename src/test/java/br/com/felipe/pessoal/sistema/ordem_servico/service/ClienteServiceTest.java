@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClienteForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
@@ -12,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -136,8 +138,41 @@ class ClienteServiceTest {
         Mockito.verify(clienteRepositoryMock).findByNome(Mockito.any());
     }
 
+    @Test
+    void solicitaAAtualizacaoDoCliente_retornaOClienteAtualizado(){
+        CadastrarClienteForm form = criarFormDeCadastro();
+
+        Cliente clienteAntigo = new Cliente("Rogerio Almeida", "78965412303", "Rua dos palmares");
+        clienteAntigo.setId(57L);
+
+        Mockito.when(clienteRepositoryMock.getOne(57L)).thenReturn(clienteAntigo);
+        Cliente clienteAtualizado = clienteService.atualizarCliente(57L, form);
+
+        assertEquals(57L,clienteAtualizado.getId());
+        assertEquals(form.getNome(),clienteAtualizado.getNome());
+        assertEquals(form.getCpf(),clienteAtualizado.getCpf());
+        assertEquals(form.getEndereco(),clienteAtualizado.getEndereco());
+    }
+
+    @Test
+    void solicitaAAtualizacaoDoClienteQueNaoExiste_retornaUmaExcessao(){
+        Mockito.when(clienteRepositoryMock.getOne(Mockito.any())).thenThrow(EntityNotFoundException.class);
+        try{
+            clienteService.atualizarCliente(Mockito.any(), criarFormDeCadastro());
+        }catch (Exception exception){
+            assertEquals(EntityNotFoundException.class,exception.getClass());
+        }
+        Mockito.verify(clienteRepositoryMock).getOne(Mockito.any());
+    }
 
 
+    private CadastrarClienteForm criarFormDeCadastro(){
+        CadastrarClienteForm form = new CadastrarClienteForm();
+        form.setNome("Felipe Ferreira");
+        form.setCpf("98765432132");
+        form.setEndereco("Alameda dos alagoanos");
+        return form;
+    }
 
     private List<Cliente> criaListaClientes(){
         Cliente cliente1 = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
