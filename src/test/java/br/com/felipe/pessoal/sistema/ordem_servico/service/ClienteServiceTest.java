@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
@@ -105,6 +106,36 @@ class ClienteServiceTest {
 
         Mockito.verify(clienteRepositoryMock).findById(Mockito.any());
     }
+
+    @Test
+    void solicitaOCadastroDeUmCliente_retornaOClienteCadastradoComSeuId(){
+        Cliente clienteComId = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
+        Cliente clienteSemId = clienteComId;
+        clienteComId.setId(5L);
+
+        Mockito.when(clienteRepositoryMock.save(Mockito.any(Cliente.class))).thenReturn(clienteComId);
+        Cliente clienteRetorno = clienteService.cadastrarCliente(clienteSemId);
+
+        assertEquals(clienteComId.getId(), clienteRetorno.getId());
+        assertEquals(clienteComId.getNome(), clienteRetorno.getNome());
+        assertEquals(clienteComId.getCpf(), clienteRetorno.getCpf());
+        assertEquals(clienteComId.getEndereco(), clienteRetorno.getEndereco());
+    }
+
+    @Test
+    void solicitaOCadastroDeUmClienteExistente_retornaUmaExcessaoEspecial(){
+        Cliente clienteComId = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
+        clienteComId.setId(5L);
+
+        Mockito.when(clienteRepositoryMock.findByNome(clienteComId.getNome())).thenReturn(Optional.of(clienteComId));
+        try{
+            clienteService.cadastrarCliente(clienteComId);
+        }catch (Exception exception){
+            assertEquals(ClienteExistenteException.class, exception.getClass());
+        }
+        Mockito.verify(clienteRepositoryMock).findByNome(Mockito.any());
+    }
+
 
 
 

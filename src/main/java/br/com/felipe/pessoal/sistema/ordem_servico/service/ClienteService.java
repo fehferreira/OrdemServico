@@ -55,7 +55,7 @@ public class ClienteService {
         }
     }
 
-    public Cliente atualizarClienteLinkado(Long id, CadastrarClienteForm form) {
+    private Cliente atualizarClienteLinkado(Long id, CadastrarClienteForm form) {
         Cliente clienteAtualizado = clienteRepository.getOne(id);
         if(!form.getNome().isEmpty())
             clienteAtualizado.setNome(form.getNome());
