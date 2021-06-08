@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -71,7 +72,7 @@ public class ClienteService {
             Cliente cliente = clienteRepository.findById(id).get();
             clienteRepository.deleteById(id);
             return cliente;
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NoSuchElementException exception){
             throw exception;
         }
     }

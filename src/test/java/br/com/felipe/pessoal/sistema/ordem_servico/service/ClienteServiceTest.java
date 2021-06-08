@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -200,6 +201,30 @@ class ClienteServiceTest {
         assertEquals(form.getEndereco(),clienteAtualizado.getEndereco());
     }
 
+    @Test
+    void solicitaUmaDelecaoDeUmCLienteComParametroID_retornaOCLienteDeletado(){
+        Cliente clienteDeletado = new Cliente("Felipe Ferreira", "12345678901", "Rua dos Jequitibás");
+        clienteDeletado.setId(1L);
+
+        Mockito.when(clienteRepositoryMock.findById(1L)).thenReturn(Optional.of(clienteDeletado));
+        Cliente retornoCliente = clienteService.deletarCliente(1L);
+
+        assertEquals(clienteDeletado.getId(),retornoCliente.getId());
+        assertEquals(clienteDeletado.getNome(),retornoCliente.getNome());
+        assertEquals(clienteDeletado.getEndereco(),retornoCliente.getEndereco());
+        assertEquals(clienteDeletado.getCpf(),retornoCliente.getCpf());
+    }
+
+    @Test
+    void solicitaUmaDelecaoDeUmClienteInexistente_retonarUmaExcessao(){
+        try {
+            Mockito.when(clienteRepositoryMock.findById(1L)).thenReturn(Optional.empty());
+            clienteService.deletarCliente(1L);
+        }catch (Exception exception){
+            assertEquals(NoSuchElementException.class, exception.getClass());
+        }
+        Mockito.verify(clienteRepositoryMock).findById(Mockito.any());
+    }
 
     private CadastrarClienteForm criarFormDeCadastro(){
         CadastrarClienteForm form = new CadastrarClienteForm();
