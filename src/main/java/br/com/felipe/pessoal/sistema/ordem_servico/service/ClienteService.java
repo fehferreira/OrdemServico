@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -43,8 +44,6 @@ public class ClienteService {
         }catch(IllegalArgumentException exception){
             throw exception;
         }
-
-
     }
 
     public Cliente atualizarCliente(Long id, CadastrarClienteForm form) {
@@ -57,7 +56,7 @@ public class ClienteService {
         }
     }
 
-    public Cliente atualizarClienteLinkado(Long id, CadastrarClienteForm form) {
+    private Cliente atualizarClienteLinkado(Long id, CadastrarClienteForm form) {
         Cliente clienteAtualizado = clienteRepository.getOne(id);
         if(!form.getNome().isEmpty())
             clienteAtualizado.setNome(form.getNome());
@@ -73,7 +72,7 @@ public class ClienteService {
             Cliente cliente = clienteRepository.findById(id).get();
             clienteRepository.deleteById(id);
             return cliente;
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NoSuchElementException exception){
             throw exception;
         }
     }
