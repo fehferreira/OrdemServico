@@ -1,10 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.form;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
-import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
-
-import javax.persistence.ManyToOne;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class OrdemServicoForm {

@@ -1,8 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.config.swagger;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDetalhadoDto;
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.TokenDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

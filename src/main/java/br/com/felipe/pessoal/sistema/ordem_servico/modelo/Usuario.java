@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.modelo;
 
-import org.hibernate.cfg.annotations.reflection.PersistentAttributeFilter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

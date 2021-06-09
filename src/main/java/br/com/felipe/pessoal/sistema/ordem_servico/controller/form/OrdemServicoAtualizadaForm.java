@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller.form;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class OrdemServicoAtualizadaForm {

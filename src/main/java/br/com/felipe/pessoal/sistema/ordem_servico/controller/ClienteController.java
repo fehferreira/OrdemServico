@@ -6,13 +6,8 @@ import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.CadastrarClie
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteExistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.cliente.ClienteInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
-import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController

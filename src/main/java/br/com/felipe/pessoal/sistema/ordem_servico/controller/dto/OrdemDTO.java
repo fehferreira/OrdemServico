@@ -3,7 +3,6 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller.dto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
-import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;

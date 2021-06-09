@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.config.security;
 
-import antlr.Token;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
