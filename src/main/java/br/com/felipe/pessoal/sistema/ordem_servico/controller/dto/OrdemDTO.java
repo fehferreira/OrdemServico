@@ -3,9 +3,10 @@ package br.com.felipe.pessoal.sistema.ordem_servico.controller.dto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrdemDTO {
 
@@ -30,8 +31,8 @@ public class OrdemDTO {
         this.aparelho = ordemServico.getAparelho();
     }
 
-    public static Page<OrdemDTO> converterOrdens(Page<OrdemServico> ordens) {
-        return ordens.map(OrdemDTO::new);
+    public static List<OrdemDTO> converterOrdens(List<OrdemServico> ordens) {
+        return ordens.stream().map(OrdemDTO::new).collect(Collectors.toList());
     }
 
     public Long getId() {

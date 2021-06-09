@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Service
 public class OrdemServicoService {
@@ -30,8 +31,8 @@ public class OrdemServicoService {
     @Autowired
     private ObjetoRepository objetoRepository;
 
-    public Page<OrdemDTO> exibirOrdens(Pageable paginacao) {
-        return OrdemDTO.converterOrdens(ordemRepository.findAll(paginacao));
+    public List<OrdemServico> exibirOrdens() {
+        return ordemRepository.findAll();
     }
 
 
