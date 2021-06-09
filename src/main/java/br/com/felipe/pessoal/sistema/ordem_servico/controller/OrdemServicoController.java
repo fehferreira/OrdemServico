@@ -45,7 +45,11 @@ public class OrdemServicoController {
 
     @DeleteMapping
     public ResponseEntity<OrdemDTO> deletarOrdem(@RequestParam Long id){
-        return ordemService.deletarOrdem(id);
+        try{
+            return ResponseEntity.ok(new OrdemDTO(ordemService.deletarOrdem(id)));
+        }catch (EntityNotFoundException | IllegalArgumentException exception){
+            return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
+        }
     }
 
 

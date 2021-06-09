@@ -45,14 +45,15 @@ public class OrdemServicoService {
         }
     }
 
-    public ResponseEntity<OrdemDTO> deletarOrdem( Long id){
-        if(!ordemRepository.findById(id).isPresent())
-            return ResponseEntity.notFound().build();
+    public OrdemServico deletarOrdem(Long id){
         try{
+            OrdemServico ordemDeletada = this.detalharOrdem(id);
             ordemRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        }catch(IllegalArgumentException exception){
-            return ResponseEntity.badRequest().build();
+            return ordemDeletada;
+        }catch(EntityNotFoundException exception){
+            throw exception;
+        }catch (IllegalArgumentException exception){
+            throw new IllegalArgumentException("Impossível deletar essa Ordem de Serviço.", exception);
         }
     }
 
