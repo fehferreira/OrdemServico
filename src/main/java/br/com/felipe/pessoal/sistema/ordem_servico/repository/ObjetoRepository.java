@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ObjetoRepository extends JpaRepository<Objeto, Long> {
 
-    Optional<Objeto> findByMarcaAndModelo(Objeto objeto);
+    Optional<Objeto> findByMarcaAndModelo(String marca, String modelo);
 
 }

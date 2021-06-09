@@ -26,7 +26,7 @@ public class ObjetoService {
 
     public Objeto cadastrarObjeto(ObjetoCadastradoForm formObjeto) {
         Objeto novoObjeto = formObjeto.retornarObjeto();
-        if(objetoRepository.findByMarcaAndModelo(novoObjeto).isPresent()){
+        if(objetoRepository.findByMarcaAndModelo(novoObjeto.getMarca(), novoObjeto.getModelo()).isPresent()){
             throw new ObjetoExistenteException("Objeto já existe no Banco de Dados.");
         }
         try{
