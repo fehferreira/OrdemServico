@@ -57,6 +57,14 @@ public class OrdemServicoService {
         }
     }
 
+    private OrdemServico detalharOrdem(Long id) {
+        try{
+            return ordemRepository.findById(id).get();
+        }catch (RuntimeException exception){
+            throw new EntityNotFoundException("Ordem de serviço nao encontrada no Banco de Dados.");
+        }
+    }
+
     public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
         try {
             Cliente cliente = clienteRepository.findById(formAtualizado.getClienteId()).get();
