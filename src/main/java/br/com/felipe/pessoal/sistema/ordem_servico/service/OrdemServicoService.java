@@ -6,17 +6,12 @@ import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoF
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
-import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
-import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -26,27 +21,27 @@ public class OrdemServicoService {
     private OrdemRepository ordemRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @Autowired
-    private ObjetoRepository objetoRepository;
+    private ObjetoService objetoService;
 
     public List<OrdemServico> exibirOrdens() {
         return ordemRepository.findAll();
     }
 
 
-    public ResponseEntity<OrdemDTO> cadastrarOrdem(OrdemServicoForm formCadastro, UriComponentsBuilder uriBuilder) {
-        try {
-            Cliente cliente = clienteRepository.findById(formCadastro.getClienteId()).get();
-            Objeto objeto = objetoRepository.findById(formCadastro.getAparelhoId()).get();
+    public OrdemServico cadastrarOrdem(OrdemServicoForm formCadastro) {
+        try{
+            Cliente cliente = clienteService.detalharCliente(formCadastro.getClienteId());
+            Objeto objeto = objetoService.detalharObjeto(formCadastro.getAparelhoId());
             OrdemServico novaOrdem = new OrdemServico(formCadastro.getDataEntrada(),formCadastro.getDataEntrega(),
                                                       cliente,objeto);
             ordemRepository.save(novaOrdem);
-            URI uri =uriBuilder.path("/servicos/${id}").buildAndExpand(novaOrdem.getId()).toUri();
-            return ResponseEntity.created(uri).body(new OrdemDTO(novaOrdem));
-        }catch (RuntimeException exception){
-            return ResponseEntity.badRequest().build();
+        }catch (EntityNotFoundException exception){
+            throw exception;
+        }catch(IllegalArgumentException exception){
+            throw new IllegalArgumentException("Impossível cadastrar nova OS", exception);
         }
     }
 
