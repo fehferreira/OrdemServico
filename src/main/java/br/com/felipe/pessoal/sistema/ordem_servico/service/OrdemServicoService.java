@@ -1,6 +1,5 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.OrdemDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
@@ -8,7 +7,6 @@ import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -37,9 +35,7 @@ public class OrdemServicoService {
             Objeto objeto = objetoService.detalharObjeto(formCadastro.getAparelhoId());
             OrdemServico novaOrdem = new OrdemServico(formCadastro.getDataEntrada(),formCadastro.getDataEntrega(),
                                                       cliente,objeto);
-            ordemRepository.save(novaOrdem);
-        }catch (EntityNotFoundException exception){
-            throw exception;
+            return ordemRepository.save(novaOrdem);
         }catch(IllegalArgumentException exception){
             throw new IllegalArgumentException("Impossível cadastrar nova OS", exception);
         }
@@ -50,8 +46,6 @@ public class OrdemServicoService {
             OrdemServico ordemDeletada = this.detalharOrdem(id);
             ordemRepository.deleteById(id);
             return ordemDeletada;
-        }catch(EntityNotFoundException exception){
-            throw exception;
         }catch (IllegalArgumentException exception){
             throw new IllegalArgumentException("Impossível deletar essa Ordem de Serviço.", exception);
         }
@@ -65,16 +59,16 @@ public class OrdemServicoService {
         }
     }
 
-    public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
+    public OrdemServico atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
         try {
-            Cliente cliente = clienteRepository.findById(formAtualizado.getClienteId()).get();
-            Objeto aparelho = objetoRepository.findById(formAtualizado.getAparelhoId()).get();
-            OrdemServico ordemServico = ordemRepository.findById(formAtualizado.getIdForm()).get();
+            Cliente cliente = clienteService.detalharCliente(formAtualizado.getClienteId());
+            Objeto aparelho = objetoService.detalharObjeto(formAtualizado.getAparelhoId());
+            OrdemServico ordemServicoAtualizada = ordemRepository.getOne(formAtualizado.getIdForm());
 
-            ordemServico.atualizarOrdem(formAtualizado, cliente, aparelho);
-            return ResponseEntity.ok().body(new OrdemDTO(ordemServico));
+            ordemServicoAtualizada.atualizarOrdem(formAtualizado, cliente, aparelho);
+            return ordemServicoAtualizada;
         }catch(IllegalArgumentException exception){
-            return ResponseEntity.notFound().build();
+            throw new IllegalArgumentException("Impossível atualizar Ordem de Serviço.", exception);
         }
     }
 }

@@ -57,7 +57,10 @@ public class OrdemServicoController {
     @ResponseBody
     @Transactional
     public ResponseEntity<OrdemDTO> atualizarOrdem(@RequestBody OrdemServicoAtualizadaForm formAtualizado){
-        return ordemService.atualizarOrdem(formAtualizado);
+        try{
+            return ResponseEntity.ok(new OrdemDTO(ordemService.atualizarOrdem(formAtualizado)));
+        }catch (RuntimeException exception){
+            return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
+        }
     }
-
 }
