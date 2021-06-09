@@ -1,22 +1,16 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.OrdemDTO;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
-import br.com.felipe.pessoal.sistema.ordem_servico.repository.ClienteRepository;
-import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class OrdemServicoService {
@@ -25,51 +19,56 @@ public class OrdemServicoService {
     private OrdemRepository ordemRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @Autowired
-    private ObjetoRepository objetoRepository;
+    private ObjetoService objetoService;
 
-    public Page<OrdemDTO> exibirOrdens(Pageable paginacao) {
-        return OrdemDTO.converterOrdens(ordemRepository.findAll(paginacao));
+    public List<OrdemServico> exibirOrdens() {
+        return ordemRepository.findAll();
     }
 
 
-    public ResponseEntity<OrdemDTO> cadastrarOrdem(OrdemServicoForm formCadastro, UriComponentsBuilder uriBuilder) {
-        try {
-            Cliente cliente = clienteRepository.findById(formCadastro.getClienteId()).get();
-            Objeto objeto = objetoRepository.findById(formCadastro.getAparelhoId()).get();
+    public OrdemServico cadastrarOrdem(OrdemServicoForm formCadastro) {
+        try{
+            Cliente cliente = clienteService.detalharCliente(formCadastro.getClienteId());
+            Objeto objeto = objetoService.detalharObjeto(formCadastro.getAparelhoId());
             OrdemServico novaOrdem = new OrdemServico(formCadastro.getDataEntrada(),formCadastro.getDataEntrega(),
                                                       cliente,objeto);
-            ordemRepository.save(novaOrdem);
-            URI uri =uriBuilder.path("/servicos/${id}").buildAndExpand(novaOrdem.getId()).toUri();
-            return ResponseEntity.created(uri).body(new OrdemDTO(novaOrdem));
-        }catch (RuntimeException exception){
-            return ResponseEntity.badRequest().build();
+            return ordemRepository.save(novaOrdem);
+        }catch(IllegalArgumentException exception){
+            throw new IllegalArgumentException("Impossível cadastrar nova OS", exception);
         }
     }
 
-    public ResponseEntity<OrdemDTO> deletarOrdem( Long id){
-        if(!ordemRepository.findById(id).isPresent())
-            return ResponseEntity.notFound().build();
+    public OrdemServico deletarOrdem(Long id){
         try{
+            OrdemServico ordemDeletada = this.detalharOrdem(id);
             ordemRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        }catch(IllegalArgumentException exception){
-            return ResponseEntity.badRequest().build();
+            return ordemDeletada;
+        }catch (IllegalArgumentException exception){
+            throw new IllegalArgumentException("Impossível deletar essa Ordem de Serviço.", exception);
         }
     }
 
-    public ResponseEntity<OrdemDTO> atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
-        try {
-            Cliente cliente = clienteRepository.findById(formAtualizado.getClienteId()).get();
-            Objeto aparelho = objetoRepository.findById(formAtualizado.getAparelhoId()).get();
-            OrdemServico ordemServico = ordemRepository.findById(formAtualizado.getIdForm()).get();
+    private OrdemServico detalharOrdem(Long id) {
+        try{
+            return ordemRepository.findById(id).get();
+        }catch (RuntimeException exception){
+            throw new EntityNotFoundException("Ordem de serviço nao encontrada no Banco de Dados.");
+        }
+    }
 
-            ordemServico.atualizarOrdem(formAtualizado, cliente, aparelho);
-            return ResponseEntity.ok().body(new OrdemDTO(ordemServico));
+    public OrdemServico atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
+        try {
+            Cliente cliente = clienteService.detalharCliente(formAtualizado.getClienteId());
+            Objeto aparelho = objetoService.detalharObjeto(formAtualizado.getAparelhoId());
+            OrdemServico ordemServicoAtualizada = ordemRepository.getOne(formAtualizado.getIdForm());
+
+            ordemServicoAtualizada.atualizarOrdem(formAtualizado, cliente, aparelho);
+            return ordemServicoAtualizada;
         }catch(IllegalArgumentException exception){
-            return ResponseEntity.notFound().build();
+            throw new IllegalArgumentException("Impossível atualizar Ordem de Serviço.", exception);
         }
     }
 }

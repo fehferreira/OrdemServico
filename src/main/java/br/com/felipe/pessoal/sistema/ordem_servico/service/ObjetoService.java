@@ -10,6 +10,7 @@ import br.com.felipe.pessoal.sistema.ordem_servico.repository.ObjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,5 +61,13 @@ public class ObjetoService {
             throw new NenhumObjetoCadastradoException("Nenhum objeto encontrado no Banco de Dados!");
         }
         return objetos;
+    }
+
+    public Objeto detalharObjeto(Long objetoId) {
+        try{
+            return objetoRepository.findById(objetoId).get();
+        }catch (Exception exception){
+            throw new EntityNotFoundException("Este objeto não existe no Banco de Dados.");
+        }
     }
 }
