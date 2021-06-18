@@ -1,14 +1,13 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.OrdemServico;
 import br.com.felipe.pessoal.sistema.ordem_servico.repository.OrdemRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrdemServiceTest {
@@ -26,8 +24,18 @@ class OrdemServiceTest {
     @Mock
     private OrdemRepository ordemRepositoryMock;
 
+    @Mock
+    private ClienteService clienteServiceMock;
+
+    @Mock
+    private ObjetoService objetoServiceMock;
+
+    @Captor
+    private ArgumentCaptor<OrdemServico> ordemCaptor;
+
     @InjectMocks
     private OrdemServicoService ordemService;
+
 
     @Test
     void solicitaTodasAsOrdensDeServico_retornaUmaListaDeOrdens(){
@@ -74,9 +82,38 @@ class OrdemServiceTest {
         Mockito.verify(ordemRepositoryMock).findById(Mockito.any());
     }
 
+    @Test
+
+    void solicitaACriacaoDeUmaOrdem_retornaAOrdemCriada(){
+        Cliente clienteCadastrado = criaClienteGenerico();
+        clienteCadastrado.setId(1L);
+        Objeto objetoCadastrado = criaObjetoGenerico();
+
+        Mockito.when(clienteServiceMock.detalharCliente(clienteCadastrado.getId())).thenReturn(clienteCadastrado);
+        Mockito.when(objetoServiceMock.detalharObjeto(objetoCadastrado.getId())).thenReturn(objetoCadastrado);
+
+        OrdemServicoForm formCadastro = new OrdemServicoForm(clienteCadastrado.getId(), objetoCadastrado.getId());
+        ordemService.cadastrarOrdem(formCadastro);
+
+        Mockito.verify(ordemRepositoryMock).save(ordemCaptor.capture());
+
+        OrdemServico ordemCadastrada = ordemCaptor.getValue();
+
+        assertEquals(clienteCadastrado, ordemCadastrada.getCliente());
+        assertEquals(objetoCadastrado, ordemCadastrada.getAparelho());
+    }
+
+    private Cliente criaClienteGenerico(){
+        return new Cliente("Felipe Ferreira", "12345678901", "Av. Tamanduateí 58");
+    }
+
+    private Objeto criaObjetoGenerico(){
+        return new Objeto(5L, "Marelli", "IAW 7GF");
+    }
+
     private OrdemServico criarOrdemServico() {
-        Cliente cliente = new Cliente("Felipe Ferreira", "12345678901", "Av. Tamanduateí 58");
-        Objeto objeto = new Objeto(5L, "Marelli", "IAW 7GF");
+        Cliente cliente = criaClienteGenerico();
+        Objeto objeto = criaObjetoGenerico();
         return new OrdemServico(LocalDateTime.now(), LocalDateTime.now().plusDays(2L), cliente, objeto);
     }
 

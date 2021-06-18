@@ -12,6 +12,11 @@ public class OrdemServicoForm {
     private Long clienteId;
     private Long aparelhoId;
 
+    public OrdemServicoForm(Long clienteId, Long aparelhoId) {
+        this.clienteId = clienteId;
+        this.aparelhoId = aparelhoId;
+    }
+
     public LocalDateTime getDataEntrada() {
         return dataEntrada;
     }
