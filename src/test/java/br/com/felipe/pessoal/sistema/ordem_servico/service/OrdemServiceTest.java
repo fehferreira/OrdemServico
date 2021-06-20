@@ -103,6 +103,31 @@ class OrdemServiceTest {
         assertEquals(objetoCadastrado, ordemCadastrada.getAparelho());
     }
 
+
+    @Test
+    void solicitaACriacaoDeUmaOrdemComErroDeSalvamento_retornaUmException(){
+        Mockito.when(ordemRepositoryMock.save(Mockito.any())).thenThrow(IllegalArgumentException.class);
+        OrdemServicoForm form = new OrdemServicoForm(1L,5L);
+        try{
+            ordemService.cadastrarOrdem(form);
+        }catch (Exception exception){
+            assertEquals(IllegalArgumentException.class, exception.getClass());
+        }
+        Mockito.verify(ordemRepositoryMock).save(Mockito.any());
+    }
+
+    @Test
+    void solicitaACriacaoDeUmaOrdemIncompleta_retornaUmaException(){
+        OrdemServicoForm form = new OrdemServicoForm(null, null);
+        try{
+            ordemService.cadastrarOrdem(form);
+        }catch (Exception exception){
+            assertEquals(EntityNotFoundException.class, exception.getClass());
+        }
+        Mockito.verify(ordemRepositoryMock).save(Mockito.any());
+    }
+
+
     private Cliente criaClienteGenerico(){
         return new Cliente("Felipe Ferreira", "12345678901", "Av. Tamanduateí 58");
     }
