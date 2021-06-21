@@ -1,5 +1,6 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.service;
 
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoAtualizadaForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.OrdemServicoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
@@ -83,7 +84,6 @@ class OrdemServiceTest {
     }
 
     @Test
-
     void solicitaACriacaoDeUmaOrdem_retornaAOrdemCriada(){
         Cliente clienteCadastrado = criaClienteGenerico();
         clienteCadastrado.setId(1L);
@@ -127,6 +127,65 @@ class OrdemServiceTest {
         Mockito.verify(ordemRepositoryMock).save(Mockito.any());
     }
 
+    @Test
+    void solicitaAAtualizacaoDeUmaOrdemExistente_retornaAOrdeAtualizada(){
+        Cliente clienteCadastrado = criaClienteGenerico();
+        clienteCadastrado.setId(1L);
+        Objeto objetoCadastrado = criaObjetoGenerico();
+        OrdemServicoAtualizadaForm formAtualizacao =
+                new OrdemServicoAtualizadaForm(clienteCadastrado.getId(), objetoCadastrado.getId());
+
+        Mockito.when(clienteServiceMock.detalharCliente(clienteCadastrado.getId())).thenReturn(clienteCadastrado);
+        Mockito.when(objetoServiceMock.detalharObjeto(objetoCadastrado.getId())).thenReturn(objetoCadastrado);
+        Mockito.when(ordemRepositoryMock.getOne(formAtualizacao.getIdForm()))
+                .thenReturn(new OrdemServico());
+
+        OrdemServico ordemRetornada = ordemService.atualizarOrdem(formAtualizacao);
+
+        assertEquals(formAtualizacao.getIdForm(), ordemRetornada.getId());
+        assertEquals(formAtualizacao.getDataEntrada(), ordemRetornada.getDataEntrada());
+        assertEquals(formAtualizacao.getDataEntrega(), ordemRetornada.getDataEntrega());
+        assertEquals(clienteCadastrado, ordemRetornada.getCliente());
+        assertEquals(objetoCadastrado, ordemRetornada.getAparelho());
+    }
+
+    @Test
+    void solicitaAtualizacaoComFormSemClienteId_retornaUmaException(){
+        OrdemServicoAtualizadaForm formAtualizacao =
+                new OrdemServicoAtualizadaForm(null, 5L);
+        formAtualizacao.setIdForm(1L);
+
+        Mockito.when(clienteServiceMock.detalharCliente(formAtualizacao.getClienteId()))
+                .thenThrow(EntityNotFoundException.class);
+        try {
+            ordemService.atualizarOrdem(formAtualizacao);
+        }catch (Exception exception){
+            assertEquals(EntityNotFoundException.class, exception.getClass());
+        }
+
+        Mockito.verify(clienteServiceMock).detalharCliente(Mockito.any());
+
+    }
+
+    @Test
+    void solicitandoAAtualizacaoComFormSemIdObjeto_retornaDeUmaException(){
+        OrdemServicoAtualizadaForm formAtualizacao =
+                new OrdemServicoAtualizadaForm(1L, null);
+        formAtualizacao.setIdForm(1L);
+
+        Mockito.when(clienteServiceMock.detalharCliente(formAtualizacao.getClienteId()))
+                .thenReturn(new Cliente());
+        Mockito.when(objetoServiceMock.detalharObjeto(formAtualizacao.getAparelhoId()))
+                .thenThrow(EntityNotFoundException.class);
+
+        try {
+            ordemService.atualizarOrdem(formAtualizacao);
+        }catch (Exception exception){
+            assertEquals(EntityNotFoundException.class, exception.getClass());
+        }
+
+        Mockito.verify(objetoServiceMock).detalharObjeto(Mockito.any());
+    }
 
     private Cliente criaClienteGenerico(){
         return new Cliente("Felipe Ferreira", "12345678901", "Av. Tamanduateí 58");

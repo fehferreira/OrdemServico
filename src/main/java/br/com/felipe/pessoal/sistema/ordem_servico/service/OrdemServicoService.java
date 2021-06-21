@@ -60,15 +60,11 @@ public class OrdemServicoService {
     }
 
     public OrdemServico atualizarOrdem(OrdemServicoAtualizadaForm formAtualizado) {
-        try {
-            Cliente cliente = clienteService.detalharCliente(formAtualizado.getClienteId());
-            Objeto aparelho = objetoService.detalharObjeto(formAtualizado.getAparelhoId());
-            OrdemServico ordemServicoAtualizada = ordemRepository.getOne(formAtualizado.getIdForm());
+        Cliente cliente = clienteService.detalharCliente(formAtualizado.getClienteId());
+        Objeto aparelho = objetoService.detalharObjeto(formAtualizado.getAparelhoId());
+        OrdemServico ordemServicoAtualizada = ordemRepository.getOne(formAtualizado.getIdForm());
 
-            ordemServicoAtualizada.atualizarOrdem(formAtualizado, cliente, aparelho);
-            return ordemServicoAtualizada;
-        }catch(IllegalArgumentException exception){
-            throw new IllegalArgumentException("Impossível atualizar Ordem de Serviço.", exception);
-        }
+        ordemServicoAtualizada.atualizarOrdem(formAtualizado, cliente, aparelho);
+        return ordemServicoAtualizada;
     }
 }
