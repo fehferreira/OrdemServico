@@ -14,6 +14,11 @@ public class OrdemServicoAtualizadaForm {
     private Long aparelhoId;
     private double valorServico;
 
+    public OrdemServicoAtualizadaForm(Long clienteId, Long aparelhoId) {
+        this.clienteId = clienteId;
+        this.aparelhoId = aparelhoId;
+    }
+
     public Long getIdForm() { return idForm; }
 
     public void setIdForm(Long idForm) { this.idForm = idForm; }
