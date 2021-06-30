@@ -72,7 +72,7 @@ public class ObjetoController {
         try{
             objetoAtualizado = objetoService.alterarObjeto(formAtualizado);
         }catch(ObjetoInexistenteException exception){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return new ResponseEntity(exception, HttpStatus.NOT_FOUND);
         }
 
         URI uri = uriBuilder.path("/objeto/${id}").buildAndExpand(objetoAtualizado.getId()).toUri();

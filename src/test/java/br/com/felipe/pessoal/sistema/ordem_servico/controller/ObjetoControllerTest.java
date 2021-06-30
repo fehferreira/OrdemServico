@@ -1,15 +1,16 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ObjetoDTO;
+import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoAtualizadoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.controller.form.ObjetoCadastradoForm;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.NenhumObjetoCadastradoException;
 import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoExistenteException;
+import br.com.felipe.pessoal.sistema.ordem_servico.exceptions.ObjetoInexistenteException;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Objeto;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ObjetoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,11 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ObjetoController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -127,10 +130,66 @@ class ObjetoControllerTest {
                         is("Impossível salvar este usuário.")));
     }
 
+    @Test
+    void deletarObjeto_deveriaRetornarObjetoDTODeletado() throws Exception {
+        Objeto objeto = this.listaObjetos.get(0);
+
+        when(serviceMock.deletarObjeto(objeto.getId())).thenReturn(objeto);
+
+        mockMvc.perform(delete(url).param("id", objeto.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.marca", is(objeto.getMarca())))
+                .andExpect(jsonPath("$.modelo", is(objeto.getModelo())));
+
+        verify(serviceMock).deletarObjeto(objeto.getId());
+    }
+
+    @Test
+    void deletarObjeto_deveriaRetornarException_NaoEncontrouObjeto() throws Exception {
+        when(serviceMock.deletarObjeto(1L))
+                .thenThrow(new ObjetoInexistenteException("Este objeto não existe no Banco de Dados."));
+
+        mockMvc.perform(delete(url).param("id", String.valueOf(1L)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.localizedMessage",
+                        is("Este objeto não existe no Banco de Dados.")));
+    }
+
+    @Test
+    void alterarObjeto_deveriaRetornarObjetoAtualizado() throws Exception {
+        Objeto objeto = this.listaObjetos.get(2);
+        ObjetoAtualizadoForm formAtualizado =
+                new ObjetoAtualizadoForm(objeto.getId(), objeto.getMarca(), objeto.getModelo());
+
+        when(serviceMock.alterarObjeto(any())).thenReturn(objeto);
+
+        mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(formAtualizado)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.marca", is(objeto.getMarca())))
+                .andExpect(jsonPath("$.modelo", is(objeto.getModelo())));
+    }
+
+    @Test
+    void alterarObjeto_deveriaRetornarExceptiono_ObjetoInexistente() throws Exception{
+        Objeto objeto = this.listaObjetos.get(2);
+        ObjetoAtualizadoForm formAtualizado =
+                new ObjetoAtualizadoForm(objeto.getId(), objeto.getMarca(), objeto.getModelo());
+
+        when(serviceMock.alterarObjeto(any()))
+                .thenThrow(new ObjetoInexistenteException("Este objeto não existe no Banco de Dados."));
+
+        mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(formAtualizado)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.localizedMessage",
+                            is("Este objeto não existe no Banco de Dados.")));
+    }
+
     private ObjetoCadastradoForm converterObjetoEmFormCadastro(Objeto objeto) {
-        ObjetoCadastradoForm form =
-                new ObjetoCadastradoForm(objeto.getMarca(), objeto.getModelo());
-        return form;
+        return new ObjetoCadastradoForm(objeto.getMarca(), objeto.getModelo());
     }
 
 }
