@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@RequestMapping("/objeto")
+@RequestMapping("/objetos")
 public class ObjetoController {
 
     @Autowired
@@ -30,14 +30,14 @@ public class ObjetoController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<ObjetoDTO>> exibirAparelhos(@PageableDefault Pageable paginacao){
+    public ResponseEntity<List<ObjetoDTO>> exibirAparelhos(){
         List<Objeto> listaObjetos;
         try{
             listaObjetos = objetoService.exibirObjetos();
         }catch (NenhumObjetoCadastradoException exception){
             return new ResponseEntity(exception, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(listaObjetos, HttpStatus.OK);
+        return new ResponseEntity(listaObjetos.stream().map(ObjetoDTO::new), HttpStatus.OK);
     }
 
     @PostMapping
@@ -72,7 +72,7 @@ public class ObjetoController {
         try{
             objetoAtualizado = objetoService.alterarObjeto(formAtualizado);
         }catch(ObjetoInexistenteException exception){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return new ResponseEntity(exception, HttpStatus.NOT_FOUND);
         }
 
         URI uri = uriBuilder.path("/objeto/${id}").buildAndExpand(objetoAtualizado.getId()).toUri();
