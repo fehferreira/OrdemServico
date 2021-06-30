@@ -1,44 +1,43 @@
 package br.com.felipe.pessoal.sistema.ordem_servico.controller;
 
-import br.com.felipe.pessoal.sistema.ordem_servico.controller.dto.ClienteDto;
 import br.com.felipe.pessoal.sistema.ordem_servico.modelo.Cliente;
 import br.com.felipe.pessoal.sistema.ordem_servico.service.ClienteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(value = ClienteController.class)
+@ActiveProfiles("test")
 class ClienteControllerTest {
 
-    @Mock
-    private ClienteService clienteServiceMock;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @InjectMocks
-    private ClienteController clienteController;
+    @Autowired
+    private ObjectMapper mapper;
+
+    @MockBean
+    private ClienteService serviceMock;
 
     @Test
-    void criaUmaRequisicaoParaListaDeClientes_retornaUmaListaDeClienteDTO(){
+    void criaUmaRequisicaoParaListaDeClientes_retornaUmaListaDeClienteDTO() throws Exception{
         List<Cliente> clientes = criarListaClientes();
-        Mockito.when(clienteServiceMock.listarClientes(Mockito.any())).thenReturn(clientes);
 
-        List<ClienteDto> retornoClientesDto = clienteController.listarClientes(null);
+        when(serviceMock.listarClientes(any())).thenReturn(clientes);
 
-        assertEquals(clientes.size(), retornoClientesDto.size());
-        assertEquals(clientes.get(0).getId(), retornoClientesDto.get(0).getId());
-        assertEquals(clientes.get(0).getNome(), retornoClientesDto.get(0).getNome());
-        assertEquals(clientes.get(0).getEndereco(), retornoClientesDto.get(0).getEndereco());
-        assertEquals(clientes.get(clientes.size()-1).getEndereco(), retornoClientesDto.get(retornoClientesDto.size()-1).getEndereco());
-        assertEquals(clientes.get(clientes.size()-1).getEndereco(), retornoClientesDto.get(retornoClientesDto.size()-1).getEndereco());
-        assertEquals(clientes.get(clientes.size()-1).getEndereco(), retornoClientesDto.get(retornoClientesDto.size()-1).getEndereco());
+        mockMvc.perform(get("/clientes"))
+                .andExpect(status().isOk());
     }
 
     private List<Cliente> criarListaClientes(){
