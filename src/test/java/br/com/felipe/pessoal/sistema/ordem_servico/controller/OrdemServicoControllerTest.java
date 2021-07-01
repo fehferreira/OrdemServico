@@ -17,8 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,9 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(OrdemServicoController.class)
@@ -83,6 +80,15 @@ class OrdemServicoControllerTest {
         String listaOrdensExperadaJSON = mapper.writeValueAsString(this.listaOrdemServico.stream().map(OrdemDTO::new));
 
         assertThat(retornoListaOrdensJSON).isEqualToIgnoringWhitespace(listaOrdensExperadaJSON);
+    }
+
+    @Test
+    void exibirOrdens_deveriaRetornarListaVazia_DBVazio() throws Exception {
+        when(serviceMock.exibirOrdens()).thenReturn(new ArrayList<OrdemServico>());
+
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(0)));
     }
 
 }
