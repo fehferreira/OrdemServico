@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class OrdemDTO {
 
     private Long id;
-    private LocalDateTime dataEntrada = LocalDateTime.now();
+    private LocalDateTime dataEntrada;
     private LocalDateTime dataEntrega;
     private Cliente cliente;
     private Objeto aparelho;
